@@ -9,6 +9,7 @@ use App\Models\Rest;
 use App\Models\CorrectionRequest;
 use App\Models\CorrectionRequestRest;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
@@ -76,11 +77,24 @@ class AttendanceController extends Controller
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $endOfMonth = Carbon::parse($month)->endOfMonth();
 
-        $attendances = Attendance::where('user_id', $user->id)
+        $dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+
+        $records = Attendance::where('user_id', $user->id)
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
-            ->orderBy('date')
+            ->with('rests')
             ->get()
-            ->map(function ($attendance) {
+            ->keyBy(function ($a) {
+                return $a->date->format('Y-m-d');
+            });
+
+        $attendances = collect();
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
+
+        foreach ($period as $date) {
+            $key = $date->format('Y-m-d');
+            $attendance = $records->get($key);
+
+            if ($attendance) {
                 $breakMinutes = $attendance->rests->sum(function ($rest) {
                     if ($rest->rest_start && $rest->rest_end) {
                         return $rest->rest_start->diffInMinutes($rest->rest_end);
@@ -92,15 +106,25 @@ class AttendanceController extends Controller
                     $totalMinutes = $attendance->clock_in->diffInMinutes($attendance->clock_out) - $breakMinutes;
                 }
 
-                return [
+                $attendances->push([
                     'id' => $attendance->id,
-                    'date' => $attendance->date->format('m/d') . '(' . ['日','月','火','水','木','金','土'][$attendance->date->dayOfWeek] . ')',
+                    'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
                     'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
                     'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
                     'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
-                ];
-            });
+                ]);
+            } else {
+                $attendances->push([
+                    'id' => null,
+                    'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
+                    'clock_in' => '',
+                    'clock_out' => '',
+                    'break_time' => '',
+                    'total_time' => '',
+                ]);
+            }
+        }
 
         $currentMonth = $startOfMonth->format('Y/m');
         $prevMonth = $startOfMonth->copy()->subMonth()->format('Y-m');

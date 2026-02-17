@@ -15,40 +15,42 @@ class AttendanceSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create('ja_JP');
-        $user = User::where('email', 'reina.n@coachtech.com')->first();
+        $users = User::all();
 
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
         $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
 
-        foreach ($period as $date) {
-            if ($date->isWeekend()) {
-                continue;
+        foreach ($users as $user) {
+            foreach ($period as $date) {
+                if ($date->isWeekend()) {
+                    continue;
+                }
+
+                $clockIn = (clone $date)->setTime(
+                    $faker->numberBetween(8, 10),
+                    $faker->randomElement([0, 15, 30, 45]),
+                    0
+                );
+                $clockOut = (clone $clockIn)->addHours($faker->numberBetween(8, 10));
+
+                $attendance = Attendance::factory()->create([
+                    'user_id' => $user->id,
+                    'date' => $date->format('Y-m-d'),
+                    'clock_in' => $clockIn,
+                    'clock_out' => $clockOut,
+                    'status' => 3,
+                ]);
+
+                $restStart = (clone $clockIn)->setTime(12, 0, 0);
+                $restEnd = (clone $restStart)->addHour();
+
+                Rest::factory()->create([
+                    'attendance_id' => $attendance->id,
+                    'rest_start' => $restStart,
+                    'rest_end' => $restEnd,
+                ]);
             }
-
-            $clockIn = (clone $date)->setTime(
-                $faker->numberBetween(8, 10),
-                $faker->randomElement([0, 15, 30, 45]),
-                0
-            );
-            $clockOut = (clone $clockIn)->addHours($faker->numberBetween(8, 10));
-
-            $attendance = Attendance::factory()->create([
-                'user_id' => $user->id,
-                'date' => $date->format('Y-m-d'),
-                'clock_in' => $clockIn,
-                'clock_out' => $clockOut,
-                'status' => 3,
-            ]);
-
-            $restStart = (clone $clockIn)->setTime(12, 0, 0);
-            $restEnd = (clone $restStart)->addHour();
-
-            Rest::factory()->create([
-                'attendance_id' => $attendance->id,
-                'rest_start' => $restStart,
-                'rest_end' => $restEnd,
-            ]);
         }
     }
 }
