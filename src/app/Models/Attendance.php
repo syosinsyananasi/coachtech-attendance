@@ -32,4 +32,9 @@ class Attendance extends Model
     {
         return $this->hasMany(Rest::class);
     }
+
+    public function correctionRequests()
+    {
+        return $this->hasMany(CorrectionRequest::class);
+    }
 }

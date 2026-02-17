@@ -10,11 +10,11 @@
 @section('nav')
 @if ($currentStatus === 3)
     <a class="header__nav-link header__nav-link--normal" href="/attendance/list">今月の出勤一覧</a>
-    <a class="header__nav-link header__nav-link--normal" href="/stamp_correction_request/list">申請一覧</a>
+    <a class="header__nav-link header__nav-link--normal" href="/correction_request/list">申請一覧</a>
 @else
     <a class="header__nav-link" href="/attendance">勤怠</a>
     <a class="header__nav-link" href="/attendance/list">勤怠一覧</a>
-    <a class="header__nav-link" href="/stamp_correction_request/list">申請</a>
+    <a class="header__nav-link" href="/correction_request/list">申請</a>
 @endif
 <form action="/logout" method="POST">
     @csrf

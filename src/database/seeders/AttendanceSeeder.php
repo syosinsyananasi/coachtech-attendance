@@ -8,11 +8,13 @@ use App\Models\Attendance;
 use App\Models\Rest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Faker\Factory as Faker;
 
 class AttendanceSeeder extends Seeder
 {
     public function run()
     {
+        $faker = Faker::create('ja_JP');
         $user = User::where('email', 'reina.n@coachtech.com')->first();
 
         $startOfMonth = Carbon::now()->startOfMonth();
@@ -25,11 +27,11 @@ class AttendanceSeeder extends Seeder
             }
 
             $clockIn = (clone $date)->setTime(
-                fake()->numberBetween(8, 10),
-                fake()->randomElement([0, 15, 30, 45]),
+                $faker->numberBetween(8, 10),
+                $faker->randomElement([0, 15, 30, 45]),
                 0
             );
-            $clockOut = (clone $clockIn)->addHours(fake()->numberBetween(8, 10));
+            $clockOut = (clone $clockIn)->addHours($faker->numberBetween(8, 10));
 
             $attendance = Attendance::factory()->create([
                 'user_id' => $user->id,

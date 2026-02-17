@@ -18,7 +18,7 @@
             @section('nav')
             <a class="header__nav-link" href="/attendance">勤怠</a>
             <a class="header__nav-link" href="/attendance/list">勤怠一覧</a>
-            <a class="header__nav-link" href="/stamp_correction_request/list">申請</a>
+            <a class="header__nav-link" href="/correction_request/list">申請</a>
             <form action="/logout" method="POST">
                 @csrf
                 <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>

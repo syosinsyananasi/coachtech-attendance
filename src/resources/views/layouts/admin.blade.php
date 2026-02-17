@@ -17,7 +17,7 @@
         <nav class="header__nav">
             <a class="header__nav-link" href="/admin/attendance/list">勤怠一覧</a>
             <a class="header__nav-link" href="/admin/staff/list">スタッフ一覧</a>
-            <a class="header__nav-link" href="/stamp_correction_request/list">申請一覧</a>
+            <a class="header__nav-link" href="/correction_request/list">申請一覧</a>
             <form action="/admin/logout" method="POST">
                 @csrf
                 <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>

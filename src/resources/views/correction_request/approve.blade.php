@@ -62,7 +62,7 @@
             @if ($isApproved)
                 <span class="detail__button detail__button--disabled">承認済み</span>
             @else
-                <form action="/stamp_correction_request/approve/{{ $correctionRequest->id ?? '' }}" method="POST" novalidate>
+                <form action="/correction_request/approve/{{ $correctionRequest->id ?? '' }}" method="POST" novalidate>
                     @csrf
                     <button class="detail__button" type="submit">承認</button>
                 </form>

@@ -13,9 +13,9 @@
 
         <nav class="tab-nav">
             <a class="tab-nav__item {{ $currentTab === 'pending' ? 'tab-nav__item--active' : 'tab-nav__item--inactive' }}"
-               href="/stamp_correction_request/list?tab=pending">承認待ち</a>
+               href="/correction_request/list?tab=pending">承認待ち</a>
             <a class="tab-nav__item {{ $currentTab === 'approved' ? 'tab-nav__item--active' : 'tab-nav__item--inactive' }}"
-               href="/stamp_correction_request/list?tab=approved">承認済み</a>
+               href="/correction_request/list?tab=approved">承認済み</a>
         </nav>
 
         <div class="table-card">
@@ -38,7 +38,7 @@
                         <td>{{ $request['target_date'] ?? '' }}</td>
                         <td>{{ $request['reason'] ?? '' }}</td>
                         <td>{{ $request['request_date'] ?? '' }}</td>
-                        <td><a class="data-table__link" href="/stamp_correction_request/approve/{{ $request['id'] ?? '' }}">詳細</a></td>
+                        <td><a class="data-table__link" href="/correction_request/approve/{{ $request['id'] ?? '' }}">詳細</a></td>
                     </tr>
                     @empty
                     <tr>
