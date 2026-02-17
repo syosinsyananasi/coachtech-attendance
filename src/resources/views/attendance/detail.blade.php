@@ -44,7 +44,7 @@
                     </div>
                 </div>
 
-                @forelse ($rests ?? [] as $index => $rest)
+                @foreach ($rests ?? [] as $index => $rest)
                 <div class="detail-card__row">
                     <span class="detail-card__label">休憩{{ $index > 0 ? $index + 1 : '' }}</span>
                     <div class="detail-card__value">
@@ -61,18 +61,19 @@
                         @endif
                     </div>
                 </div>
-                @empty
+                @endforeach
+
                 @if (!$isPending)
+                @php $nextIndex = count($rests ?? []); @endphp
                 <div class="detail-card__row">
-                    <span class="detail-card__label">休憩</span>
+                    <span class="detail-card__label">休憩{{ $nextIndex > 0 ? $nextIndex + 1 : '' }}</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="rests[0][start]" value="">
+                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][start]" value="">
                         <span>〜</span>
-                        <input class="detail-card__input" type="text" name="rests[0][end]" value="">
+                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][end]" value="">
                     </div>
                 </div>
                 @endif
-                @endforelse
 
                 <div class="detail-card__row">
                     <span class="detail-card__label">備考</span>

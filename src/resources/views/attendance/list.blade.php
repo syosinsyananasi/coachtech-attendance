@@ -47,7 +47,11 @@
                         <td>{{ $attendance['clock_out'] ?? '' }}</td>
                         <td>{{ $attendance['break_time'] ?? '' }}</td>
                         <td>{{ $attendance['total_time'] ?? '' }}</td>
-                        <td><a class="data-table__link" href="/attendance/detail/{{ $attendance['id'] ?? '' }}">詳細</a></td>
+                        <td>
+                            @if (!empty($attendance['id']))
+                                <a class="data-table__link" href="/attendance/detail/{{ $attendance['id'] }}">詳細</a>
+                            @endif
+                        </td>
                     </tr>
                     @empty
                     <tr>
