@@ -9,21 +9,16 @@
 
         <div class="month-nav">
             <a class="month-nav__link" href="/attendance/list?month={{ $prevMonth ?? '' }}">
-                <span class="month-nav__arrow">&#9664;</span>
+                <span class="month-nav__arrow material-symbols-outlined">arrow_back</span>
                 前月
             </a>
             <span class="month-nav__current">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
+                <img src="{{ asset('images/calendar.png') }}" alt="カレンダー" width="20" height="20">
                 {{ $currentMonth ?? '2023/06' }}
             </span>
             <a class="month-nav__link" href="/attendance/list?month={{ $nextMonth ?? '' }}">
                 翌月
-                <span class="month-nav__arrow">&#9654;</span>
+                <span class="month-nav__arrow material-symbols-outlined">arrow_forward</span>
             </a>
         </div>
 

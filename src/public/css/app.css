@@ -271,15 +271,15 @@ button {
 .content-page__inner {
     max-width: 900px;
     margin: 0 auto;
-    padding: 110px 20px 185px;
+    padding: 90px 20px 114px;
 }
 
 .content-page__title {
     font-size: 30px;
     font-weight: 700;
-    padding-left: 16px;
-    border-left: 4px solid #000;
-    margin-bottom: 40px;
+    padding-left: 20px;
+    border-left: 8px solid #000;
+    margin-bottom: 46px;
 }
 
 /* ===== Month Navigation Block ===== */
@@ -291,7 +291,7 @@ button {
     align-items: center;
     justify-content: space-between;
     padding: 0 25px;
-    margin-bottom: 20px;
+    margin-bottom: 46px;
 }
 
 .month-nav__link {
@@ -305,8 +305,10 @@ button {
 }
 
 .month-nav__arrow {
-    opacity: 0.3;
-    font-size: 12px;
+    font-size: 20px;
+    width: 20px;
+    height: 15px;
+    margin-bottom: 2px;
 }
 
 .month-nav__current {
@@ -314,7 +316,7 @@ button {
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 11px;
 }
 
 /* ===== Tab Navigation Block ===== */
@@ -354,20 +356,33 @@ button {
 
 .data-table th,
 .data-table td {
-    padding: 12px 15px;
+    padding: 11px 15px;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 2.4px;
     color: #737373;
+    text-align: center;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
     text-align: left;
+    padding-left: 55px;
+    padding-right: 90px;
+}
+
+.data-table th:not(:first-child),
+.data-table td:not(:first-child) {
+    padding-left: 0;
+    padding-right: 75px;
 }
 
 .data-table thead tr {
-    border-bottom: 3px solid #2d2d2d;
+    border-bottom: 3px solid rgba(225, 225, 225, 1);
 }
 
 .data-table tbody tr {
-    border-bottom: 2px solid #e8e8e8;
+    border-bottom: 2px solid rgba(225, 225, 225, 1);
 }
 
 .data-table tbody tr:last-child {
