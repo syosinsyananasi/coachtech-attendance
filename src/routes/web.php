@@ -6,6 +6,10 @@ use App\Http\Controllers\CorrectionRequestController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminAttendanceController;
 
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 // 一般ユーザー（認証 + メール認証済み）
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'index']);
