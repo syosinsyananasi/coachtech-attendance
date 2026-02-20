@@ -33,16 +33,25 @@
                         @if ($isPending)
                             <span>{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}</span>
                         @else
-                            <input class="detail-card__input" type="text" name="clock_in" value="{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}">
+                            <input class="detail-card__input" type="text" name="clock_in" value="{{ old('clock_in', $attendance->clock_in ? $attendance->clock_in->format('H:i') : '') }}">
                         @endif
                         <span>〜</span>
                         @if ($isPending)
                             <span>{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}</span>
                         @else
-                            <input class="detail-card__input" type="text" name="clock_out" value="{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}">
+                            <input class="detail-card__input" type="text" name="clock_out" value="{{ old('clock_out', $attendance->clock_out ? $attendance->clock_out->format('H:i') : '') }}">
                         @endif
                     </div>
                 </div>
+                @if ($errors->has('clock_in') || $errors->has('clock_out'))
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        @error('clock_in') <span class="detail-card__error">{{ $message }}</span> @enderror
+                        @error('clock_out') <span class="detail-card__error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                @endif
 
                 @foreach ($rests ?? [] as $index => $rest)
                 <div class="detail-card__row">
@@ -51,16 +60,25 @@
                         @if ($isPending)
                             <span>{{ $rest['start'] ?? '' }}</span>
                         @else
-                            <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" value="{{ $rest['start'] ?? '' }}">
+                            <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" value="{{ old("rests.{$index}.start", $rest['start'] ?? '') }}">
                         @endif
                         <span>〜</span>
                         @if ($isPending)
                             <span>{{ $rest['end'] ?? '' }}</span>
                         @else
-                            <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" value="{{ $rest['end'] ?? '' }}">
+                            <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" value="{{ old("rests.{$index}.end", $rest['end'] ?? '') }}">
                         @endif
                     </div>
                 </div>
+                @if ($errors->has("rests.{$index}.start") || $errors->has("rests.{$index}.end"))
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        @error("rests.{$index}.start") <span class="detail-card__error">{{ $message }}</span> @enderror
+                        @error("rests.{$index}.end") <span class="detail-card__error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                @endif
                 @endforeach
 
                 @if (!$isPending)
@@ -68,11 +86,20 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label">休憩{{ $nextIndex > 0 ? $nextIndex + 1 : '' }}</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][start]" value="">
+                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][start]" value="{{ old("rests.{$nextIndex}.start") }}">
                         <span>〜</span>
-                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][end]" value="">
+                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][end]" value="{{ old("rests.{$nextIndex}.end") }}">
                     </div>
                 </div>
+                @if ($errors->has("rests.{$nextIndex}.start") || $errors->has("rests.{$nextIndex}.end"))
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        @error("rests.{$nextIndex}.start") <span class="detail-card__error">{{ $message }}</span> @enderror
+                        @error("rests.{$nextIndex}.end") <span class="detail-card__error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                @endif
                 @endif
 
                 <div class="detail-card__row">
@@ -81,10 +108,18 @@
                         @if ($isPending)
                             <span>{{ $attendance->note ?? '' }}</span>
                         @else
-                            <textarea class="detail-card__textarea" name="note">{{ $attendance->note ?? '' }}</textarea>
+                            <textarea class="detail-card__textarea" name="note">{{ old('note', $attendance->note ?? '') }}</textarea>
                         @endif
                     </div>
                 </div>
+                @error('note')
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        <span class="detail-card__error">{{ $message }}</span>
+                    </div>
+                </div>
+                @enderror
             </div>
 
             @if ($isPending)

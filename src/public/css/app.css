@@ -475,6 +475,11 @@ button {
     letter-spacing: 2.1px;
 }
 
+.detail-card__error {
+    color: #e74c3c;
+    font-size: 12px;
+}
+
 .detail__actions {
     display: flex;
     justify-content: flex-end;
