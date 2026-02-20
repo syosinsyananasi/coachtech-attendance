@@ -17,9 +17,10 @@
 
                 <div class="detail-card__row">
                     <span class="detail-card__label">日付</span>
-                    <div class="detail-card__value detail-card__value--date">
-                        <span>{{ $year ?? '2023' }}年</span>
-                        <span>{{ $monthDay ?? '6月1日' }}</span>
+                    <div class="detail-card__value">
+                        <span class="detail-card__text">{{ $year ?? '2023' }}年</span>
+                        <div class="detail-card__separator"></div>
+                        <span class="detail-card__text">{{ $monthDay ?? '6月1日' }}</span>
                     </div>
                 </div>
 
@@ -27,7 +28,7 @@
                     <span class="detail-card__label">出勤・退勤</span>
                     <div class="detail-card__value">
                         <input class="detail-card__input" type="text" name="clock_in" value="{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}">
-                        <span>〜</span>
+                        <span class="detail-card__separator">〜</span>
                         <input class="detail-card__input" type="text" name="clock_out" value="{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}">
                     </div>
                 </div>
@@ -37,7 +38,7 @@
                     <span class="detail-card__label">休憩{{ $index > 0 ? $index + 1 : '' }}</span>
                     <div class="detail-card__value">
                         <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" value="{{ $rest['start'] ?? '' }}">
-                        <span>〜</span>
+                        <span class="detail-card__separator">〜</span>
                         <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" value="{{ $rest['end'] ?? '' }}">
                     </div>
                 </div>
@@ -46,7 +47,7 @@
                     <span class="detail-card__label">休憩</span>
                     <div class="detail-card__value">
                         <input class="detail-card__input" type="text" name="rests[0][start]" value="">
-                        <span>〜</span>
+                        <span class="detail-card__separator">〜</span>
                         <input class="detail-card__input" type="text" name="rests[0][end]" value="">
                     </div>
                 </div>

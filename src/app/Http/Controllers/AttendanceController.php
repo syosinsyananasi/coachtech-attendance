@@ -142,19 +142,35 @@ class AttendanceController extends Controller
             abort(403);
         }
 
-        $isPending = CorrectionRequest::where('attendance_id', $id)
+        $pendingRequest = CorrectionRequest::where('attendance_id', $id)
             ->where('status', 0)
-            ->exists();
+            ->with('correctionRequestRests')
+            ->first();
+
+        $isPending = (bool) $pendingRequest;
 
         $year = $attendance->date->format('Y');
         $monthDay = $attendance->date->format('n月j日');
 
-        $rests = $attendance->rests->map(function ($rest) {
-            return [
-                'start' => $rest->rest_start ? $rest->rest_start->format('H:i') : '',
-                'end' => $rest->rest_end ? $rest->rest_end->format('H:i') : '',
-            ];
-        })->toArray();
+        if ($isPending) {
+            $attendance->clock_in = $pendingRequest->request_clock_in;
+            $attendance->clock_out = $pendingRequest->request_clock_out;
+            $attendance->note = $pendingRequest->remark;
+
+            $rests = $pendingRequest->correctionRequestRests->map(function ($rest) {
+                return [
+                    'start' => $rest->request_rest_start ? $rest->request_rest_start->format('H:i') : '',
+                    'end' => $rest->request_rest_end ? $rest->request_rest_end->format('H:i') : '',
+                ];
+            })->toArray();
+        } else {
+            $rests = $attendance->rests->map(function ($rest) {
+                return [
+                    'start' => $rest->rest_start ? $rest->rest_start->format('H:i') : '',
+                    'end' => $rest->rest_end ? $rest->rest_end->format('H:i') : '',
+                ];
+            })->toArray();
+        }
 
         return view('attendance.detail', compact('attendance', 'year', 'monthDay', 'rests', 'isPending'));
     }

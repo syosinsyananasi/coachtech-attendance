@@ -21,9 +21,10 @@
 
                 <div class="detail-card__row">
                     <span class="detail-card__label">日付</span>
-                    <div class="detail-card__value detail-card__value--date">
-                        <span>{{ $year ?? '2023' }}年</span>
-                        <span>{{ $monthDay ?? '6月1日' }}</span>
+                    <div class="detail-card__value">
+                        <span class="detail-card__text">{{ $year ?? '2023' }}年</span>
+                        <div class="detail-card__separator"></div>
+                        <span class="detail-card__text">{{ $monthDay ?? '6月1日' }}</span>
                     </div>
                 </div>
 
@@ -31,13 +32,13 @@
                     <span class="detail-card__label">出勤・退勤</span>
                     <div class="detail-card__value">
                         @if ($isPending)
-                            <span>{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}</span>
+                            <div class="detail-card__text">{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}</div>
                         @else
                             <input class="detail-card__input" type="text" name="clock_in" value="{{ old('clock_in', $attendance->clock_in ? $attendance->clock_in->format('H:i') : '') }}">
                         @endif
-                        <span>〜</span>
+                        <span class="detail-card__separator">〜</span>
                         @if ($isPending)
-                            <span>{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}</span>
+                            <div class="detail-card__text">{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}</div>
                         @else
                             <input class="detail-card__input" type="text" name="clock_out" value="{{ old('clock_out', $attendance->clock_out ? $attendance->clock_out->format('H:i') : '') }}">
                         @endif
@@ -58,13 +59,13 @@
                     <span class="detail-card__label">休憩{{ $index > 0 ? $index + 1 : '' }}</span>
                     <div class="detail-card__value">
                         @if ($isPending)
-                            <span>{{ $rest['start'] ?? '' }}</span>
+                            <div class="detail-card__text">{{ $rest['start'] ?? '' }}</div>
                         @else
                             <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" value="{{ old("rests.{$index}.start", $rest['start'] ?? '') }}">
                         @endif
-                        <span>〜</span>
+                        <span class="detail-card__separator">〜</span>
                         @if ($isPending)
-                            <span>{{ $rest['end'] ?? '' }}</span>
+                            <div class="detail-card__text">{{ $rest['end'] ?? '' }}</div>
                         @else
                             <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" value="{{ old("rests.{$index}.end", $rest['end'] ?? '') }}">
                         @endif
@@ -83,11 +84,11 @@
 
                 @if (!$isPending)
                 @php $nextIndex = count($rests ?? []); @endphp
-                <div class="detail-card__row">
+                <div class="detail-card__row" id="rest-new-row" data-index="{{ $nextIndex }}">
                     <span class="detail-card__label">休憩{{ $nextIndex > 0 ? $nextIndex + 1 : '' }}</span>
                     <div class="detail-card__value">
                         <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][start]" value="{{ old("rests.{$nextIndex}.start") }}">
-                        <span>〜</span>
+                        <span class="detail-card__separator">〜</span>
                         <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][end]" value="{{ old("rests.{$nextIndex}.end") }}">
                     </div>
                 </div>
@@ -100,13 +101,14 @@
                     </div>
                 </div>
                 @endif
+                <div id="rest-container"></div>
                 @endif
 
                 <div class="detail-card__row">
                     <span class="detail-card__label">備考</span>
                     <div class="detail-card__value">
                         @if ($isPending)
-                            <span>{{ $attendance->note ?? '' }}</span>
+                            <div>{{ $attendance->note ?? '' }}</div>
                         @else
                             <textarea class="detail-card__textarea" name="note">{{ old('note', $attendance->note ?? '') }}</textarea>
                         @endif
@@ -133,3 +135,51 @@
     </div>
 </div>
 @endsection
+
+@if (!$isPending)
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.getElementById('rest-container');
+    var newRow = document.getElementById('rest-new-row');
+    var currentIndex = parseInt(newRow.dataset.index);
+
+    function watchRow(row) {
+        var inputs = row.querySelectorAll('.detail-card__input');
+        inputs.forEach(function (input) {
+            input.addEventListener('input', function () {
+                if (row.dataset.added) return;
+                var hasValue = false;
+                inputs.forEach(function (inp) {
+                    if (inp.value.trim() !== '') hasValue = true;
+                });
+                if (hasValue) {
+                    row.dataset.added = 'true';
+                    currentIndex++;
+                    addNewRow(currentIndex);
+                }
+            });
+        });
+    }
+
+    function addNewRow(index) {
+        var label = index > 0 ? '休憩' + (index + 1) : '休憩';
+        var row = document.createElement('div');
+        row.className = 'detail-card__row';
+        row.dataset.index = index;
+        row.innerHTML =
+            '<span class="detail-card__label">' + label + '</span>' +
+            '<div class="detail-card__value">' +
+            '<input class="detail-card__input" type="text" name="rests[' + index + '][start]" value="">' +
+            '<span class="detail-card__separator">〜</span>' +
+            '<input class="detail-card__input" type="text" name="rests[' + index + '][end]" value="">' +
+            '</div>';
+        container.appendChild(row);
+        watchRow(row);
+    }
+
+    watchRow(newRow);
+});
+</script>
+@endsection
+@endif
