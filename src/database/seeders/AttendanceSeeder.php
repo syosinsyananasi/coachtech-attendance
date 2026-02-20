@@ -17,8 +17,8 @@ class AttendanceSeeder extends Seeder
         $faker = Faker::create('ja_JP');
         $users = User::all();
 
-        $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
+        $startOfMonth = Carbon::create(2026, 1, 1);
+        $endOfMonth = Carbon::create(2026, 1, 31);
         $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
 
         foreach ($users as $user) {

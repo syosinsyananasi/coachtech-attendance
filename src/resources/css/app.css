@@ -64,13 +64,14 @@ button {
 }
 
 .header__nav-link--normal {
-    font-weight: 400;
+    font-size: 26px;
+    font-weight: 700;
 }
 
 .header__nav-button {
     background: none;
     border: none;
-    padding: 0;
+    padding: 0 0 0 10px;
     font-family: inherit;
 }
 
@@ -78,14 +79,14 @@ button {
 .auth-form {
     max-width: 680px;
     margin: 0 auto;
-    padding: 80px 20px 60px;
+    padding: 110px 20px 185px;
 }
 
 .auth-form__title {
     font-size: 36px;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 }
 
 .auth-form__group {
@@ -219,14 +220,14 @@ button {
 .attendance__date {
     font-size: 40px;
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 32px;
 }
 
 .attendance__time {
     font-size: 80px;
     font-weight: 700;
     font-family: "Inter", monospace;
-    margin-bottom: 50px;
+    margin-bottom: 87px;
 }
 
 .attendance__actions {
@@ -246,6 +247,7 @@ button {
     letter-spacing: 4.8px;
     font-family: inherit;
     cursor: pointer;
+    margin-bottom: 280px;
 }
 
 .attendance__button--white {
@@ -269,7 +271,7 @@ button {
 .content-page__inner {
     max-width: 900px;
     margin: 0 auto;
-    padding: 80px 20px 60px;
+    padding: 110px 20px 185px;
 }
 
 .content-page__title {
