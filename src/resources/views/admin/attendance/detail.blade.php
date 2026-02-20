@@ -12,12 +12,12 @@
             <div class="detail-card detail-card--bordered">
                 <div class="detail-card__row">
                     <span class="detail-card__label">名前</span>
-                    <span class="detail-card__value">{{ $attendance->user->name ?? '' }}</span>
+                    <span class="detail-card__value detail-card__value--date">{{ $attendance->user->name ?? '' }}</span>
                 </div>
 
                 <div class="detail-card__row">
                     <span class="detail-card__label">日付</span>
-                    <div class="detail-card__value">
+                    <div class="detail-card__value detail-card__value--date">
                         <span>{{ $year ?? '2023' }}年</span>
                         <span>{{ $monthDay ?? '6月1日' }}</span>
                     </div>
@@ -26,9 +26,9 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label">出勤・退勤</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="clock_in" value="{{ $attendance->clock_in ?? '' }}">
+                        <input class="detail-card__input" type="text" name="clock_in" value="{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}">
                         <span>〜</span>
-                        <input class="detail-card__input" type="text" name="clock_out" value="{{ $attendance->clock_out ?? '' }}">
+                        <input class="detail-card__input" type="text" name="clock_out" value="{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}">
                     </div>
                 </div>
 
