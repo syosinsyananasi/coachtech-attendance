@@ -26,6 +26,7 @@ class CorrectionRequestController extends Controller
             ->map(function ($req) {
                 return [
                     'id' => $req->id,
+                    'attendance_id' => $req->attendance_id,
                     'status_label' => $req->status === 0 ? '承認待ち' : '承認済み',
                     'user_name' => $req->user->name,
                     'target_date' => $req->attendance->date->format('Y/m/d'),

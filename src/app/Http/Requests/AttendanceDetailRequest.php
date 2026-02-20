@@ -19,7 +19,7 @@ class AttendanceDetailRequest extends FormRequest
             'rests' => ['nullable', 'array'],
             'rests.*.start' => ['nullable', 'date_format:H:i'],
             'rests.*.end' => ['nullable', 'date_format:H:i', 'after:rests.*.start'],
-            'note' => ['required', 'string', 'max:255'],
+            'note' => ['required', 'string', 'max:25'],
         ];
     }
 
@@ -35,7 +35,7 @@ class AttendanceDetailRequest extends FormRequest
             'rests.*.end.date_format' => '休憩終了時間はHH:MM形式で入力してください',
             'rests.*.end.after' => '休憩時間が勤務時間外です',
             'note.required' => '備考を記入してください',
-            'note.max' => '備考は255文字以内で入力してください',
+            'note.max' => '備考は25文字以内で入力してください',
         ];
     }
 }

@@ -19,7 +19,7 @@
         </nav>
 
         <div class="table-card">
-            <table class="data-table">
+            <table class="data-table data-table--request">
                 <thead>
                     <tr>
                         <th>状態</th>

@@ -272,7 +272,7 @@ button {
 .content-page__inner {
     max-width: 900px;
     margin: 0 auto;
-    padding: 90px 20px 77px;
+    padding: 90px 0 77px;
 }
 
 .content-page__title {
@@ -389,6 +389,38 @@ button {
 
 .data-table tbody tr:last-child {
     border-bottom: none;
+}
+
+.data-table--request {
+    table-layout: fixed;
+}
+
+.data-table--request th:first-child,
+.data-table--request td:first-child {
+    text-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.data-table--request td:nth-child(2),
+.data-table--request td:nth-child(4) {
+    word-break: break-all;
+}
+
+.data-table--request th:not(:first-child),
+.data-table--request td:not(:first-child) {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.data-table--request th:nth-child(n+2):nth-child(-n+5),
+.data-table--request td:nth-child(n+2):nth-child(-n+5) {
+    text-align: left;
+}
+
+.data-table--request td:nth-child(3),
+.data-table--request td:nth-child(5) {
+    letter-spacing: normal;
 }
 
 .data-table__link {

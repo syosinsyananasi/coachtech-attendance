@@ -19,7 +19,7 @@
         </nav>
 
         <div class="table-card">
-            <table class="data-table">
+            <table class="data-table data-table--request">
                 <thead>
                     <tr>
                         <th>状態</th>
@@ -38,7 +38,7 @@
                         <td>{{ $request['target_date'] ?? '' }}</td>
                         <td>{{ $request['reason'] ?? '' }}</td>
                         <td>{{ $request['request_date'] ?? '' }}</td>
-                        <td><a class="data-table__link" href="/correction_request/{{ $request['id'] ?? '' }}">詳細</a></td>
+                        <td><a class="data-table__link" href="/attendance/detail/{{ $request['attendance_id'] ?? '' }}">詳細</a></td>
                     </tr>
                     @empty
                     <tr>
