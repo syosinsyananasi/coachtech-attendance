@@ -9,14 +9,14 @@
 
 @section('nav')
 @if ($currentStatus === 3)
-    <a class="header__nav-link header__nav-link--normal" href="/attendance/list">今月の出勤一覧</a>
-    <a class="header__nav-link header__nav-link--normal" href="/correction_request/list">申請一覧</a>
+    <a class="header__nav-link header__nav-link--normal" href="{{ route('attendance.list') }}">今月の出勤一覧</a>
+    <a class="header__nav-link header__nav-link--normal" href="{{ route('correction_request.list') }}">申請一覧</a>
 @else
-    <a class="header__nav-link" href="/attendance">勤怠</a>
-    <a class="header__nav-link" href="/attendance/list">勤怠一覧</a>
-    <a class="header__nav-link" href="/correction_request/list">申請</a>
+    <a class="header__nav-link" href="{{ route('attendance.index') }}">勤怠</a>
+    <a class="header__nav-link" href="{{ route('attendance.list') }}">勤怠一覧</a>
+    <a class="header__nav-link" href="{{ route('correction_request.list') }}">申請</a>
 @endif
-<form action="/logout" method="POST">
+<form action="{{ route('logout') }}" method="POST">
     @csrf
     <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>
 </form>
@@ -30,23 +30,23 @@
         <p class="attendance__time" id="current-time"></p>
 
         @if ($currentStatus === 0)
-            <form action="/attendance" method="POST">
+            <form action="{{ route('attendance.store') }}" method="POST">
                 @csrf
                 <button class="attendance__button" type="submit" name="action" value="clock_in">出勤</button>
             </form>
         @elseif ($currentStatus === 1)
             <div class="attendance__actions">
-                <form action="/attendance" method="POST">
+                <form action="{{ route('attendance.store') }}" method="POST">
                     @csrf
                     <button class="attendance__button" type="submit" name="action" value="clock_out">退勤</button>
                 </form>
-                <form action="/attendance" method="POST">
+                <form action="{{ route('attendance.store') }}" method="POST">
                     @csrf
                     <button class="attendance__button attendance__button--white" type="submit" name="action" value="break_start">休憩入</button>
                 </form>
             </div>
         @elseif ($currentStatus === 2)
-            <form action="/attendance" method="POST">
+            <form action="{{ route('attendance.store') }}" method="POST">
                 @csrf
                 <button class="attendance__button attendance__button--white" type="submit" name="action" value="break_end">休憩戻</button>
             </form>

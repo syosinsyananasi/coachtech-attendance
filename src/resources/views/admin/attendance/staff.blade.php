@@ -8,7 +8,7 @@
         <h2 class="content-page__title">{{ $staffName ?? '' }}さんの勤怠</h2>
 
         <div class="month-nav">
-            <a class="month-nav__link" href="/admin/attendance/staff/{{ $staffId ?? '' }}?month={{ $prevMonth ?? '' }}">
+            <a class="month-nav__link" href="{{ route('admin.attendance.staff', ['id' => $staffId ?? '', 'month' => $prevMonth ?? '']) }}">
                 <span class="month-nav__arrow material-symbols-outlined">arrow_back</span>
                 前月
             </a>
@@ -16,7 +16,7 @@
                 <img src="{{ asset('images/calendar.png') }}" alt="カレンダー" width="20" height="20">
                 {{ $currentMonth ?? '2023/06' }}
             </span>
-            <a class="month-nav__link" href="/admin/attendance/staff/{{ $staffId ?? '' }}?month={{ $nextMonth ?? '' }}">
+            <a class="month-nav__link" href="{{ route('admin.attendance.staff', ['id' => $staffId ?? '', 'month' => $nextMonth ?? '']) }}">
                 翌月
                 <span class="month-nav__arrow material-symbols-outlined">arrow_forward</span>
             </a>
@@ -44,7 +44,7 @@
                         <td>{{ $attendance['total_time'] ?? '' }}</td>
                         <td>
                             @if ($attendance['id'])
-                                <a class="data-table__link" href="/admin/attendance/{{ $attendance['id'] }}">詳細</a>
+                                <a class="data-table__link" href="{{ route('admin.attendance.detail', $attendance['id']) }}">詳細</a>
                             @endif
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="detail__actions">
-            <a class="csv-export__button" href="/admin/attendance/staff/{{ $staffId ?? '' }}/csv?month={{ $currentMonth ?? '' }}">CSV出力</a>
+            <a class="csv-export__button" href="{{ route('admin.attendance.staff.csv', ['id' => $staffId ?? '', 'month' => $currentMonth ?? '']) }}">CSV出力</a>
         </div>
     </div>
 </div>

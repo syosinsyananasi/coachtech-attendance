@@ -104,7 +104,7 @@ class AdminAttendanceController extends Controller
             }
         }
 
-        return redirect('/admin/attendance/' . $id);
+        return redirect()->route('admin.attendance.detail', $id);
     }
 
     public function staffList()

@@ -104,7 +104,7 @@ class CorrectionRequestController extends Controller
         ])->findOrFail($id);
 
         if ($correctionRequest->status !== 0) {
-            return redirect('/correction_request/approve/' . $id);
+            return redirect()->route('correction_request.approve', $id);
         }
 
         $attendance = $correctionRequest->attendance;
@@ -133,6 +133,6 @@ class CorrectionRequestController extends Controller
             'approved_at' => Carbon::now(),
         ]);
 
-        return redirect('/correction_request/approve/' . $id);
+        return redirect()->route('correction_request.approve', $id);
     }
 }

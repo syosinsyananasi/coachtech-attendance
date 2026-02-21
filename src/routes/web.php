@@ -7,42 +7,43 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminAttendanceController;
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect()->route('login');
 });
 
 // 一般ユーザー（認証 + メール認証済み）
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/attendance', [AttendanceController::class, 'index']);
-    Route::post('/attendance', [AttendanceController::class, 'store']);
-    Route::get('/attendance/list', [AttendanceController::class, 'list']);
-    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail']);
-    Route::post('/attendance/detail/{id}', [AttendanceController::class, 'update']);
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
+    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
+    Route::post('/attendance/detail/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
 });
 
 // 修正申請一覧（一般/管理者共用URL、ガードで分岐）
 Route::get('/correction_request/list', [CorrectionRequestController::class, 'list'])
-    ->middleware('auth:admin,web');
+    ->middleware('auth:admin,web')
+    ->name('correction_request.list');
 
 // 修正申請承認（管理者のみ）
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/correction_request/approve/{id}', [CorrectionRequestController::class, 'approve']);
-    Route::post('/correction_request/approve/{id}', [CorrectionRequestController::class, 'storeApproval']);
+    Route::get('/correction_request/approve/{id}', [CorrectionRequestController::class, 'approve'])->name('correction_request.approve');
+    Route::post('/correction_request/approve/{id}', [CorrectionRequestController::class, 'storeApproval'])->name('correction_request.storeApproval');
 });
 
 // 管理者認証
 Route::prefix('admin')->group(function () {
     Route::middleware('guest:admin')->group(function () {
-        Route::get('/login', [AdminAuthController::class, 'showLogin']);
-        Route::post('/login', [AdminAuthController::class, 'login']);
+        Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login.show');
+        Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login');
     });
 
     Route::middleware('auth:admin')->group(function () {
-        Route::post('/logout', [AdminAuthController::class, 'logout']);
-        Route::get('/attendance/list', [AdminAttendanceController::class, 'list']);
-        Route::get('/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance']);
-        Route::get('/attendance/staff/{id}/csv', [AdminAttendanceController::class, 'staffCsv']);
-        Route::get('/attendance/{id}', [AdminAttendanceController::class, 'detail']);
-        Route::post('/attendance/{id}', [AdminAttendanceController::class, 'update']);
-        Route::get('/staff/list', [AdminAttendanceController::class, 'staffList']);
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+        Route::get('/attendance/list', [AdminAttendanceController::class, 'list'])->name('admin.attendance.list');
+        Route::get('/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance'])->name('admin.attendance.staff');
+        Route::get('/attendance/staff/{id}/csv', [AdminAttendanceController::class, 'staffCsv'])->name('admin.attendance.staff.csv');
+        Route::get('/attendance/{id}', [AdminAttendanceController::class, 'detail'])->name('admin.attendance.detail');
+        Route::post('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('admin.attendance.update');
+        Route::get('/staff/list', [AdminAttendanceController::class, 'staffList'])->name('admin.staff.list');
     });
 });

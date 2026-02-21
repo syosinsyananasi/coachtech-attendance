@@ -5,7 +5,7 @@
 @section('content')
 <div class="auth-form">
     <h2 class="auth-form__title">ログイン</h2>
-    <form action="/login" method="POST" novalidate>
+    <form action="{{ route('login') }}" method="POST" novalidate>
         @csrf
         <div class="auth-form__group">
             <label class="auth-form__label" for="email">メールアドレス</label>
@@ -23,6 +23,6 @@
         </div>
         <button class="auth-form__button" type="submit">ログインする</button>
     </form>
-    <a class="auth-form__link" href="/register">会員登録はこちら</a>
+    <a class="auth-form__link" href="{{ route('register') }}">会員登録はこちら</a>
 </div>
 @endsection

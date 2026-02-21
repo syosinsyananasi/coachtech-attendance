@@ -21,7 +21,7 @@
                     <tr>
                         <td>{{ $staff['name'] ?? '' }}</td>
                         <td>{{ $staff['email'] ?? '' }}</td>
-                        <td><a class="data-table__link" href="/admin/attendance/staff/{{ $staff['id'] ?? '' }}">詳細</a></td>
+                        <td><a class="data-table__link" href="{{ route('admin.attendance.staff', $staff['id'] ?? '') }}">詳細</a></td>
                     </tr>
                     @empty
                     <tr>

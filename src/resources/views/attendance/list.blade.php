@@ -8,7 +8,7 @@
         <h2 class="content-page__title">勤怠一覧</h2>
 
         <div class="month-nav">
-            <a class="month-nav__link" href="/attendance/list?month={{ $prevMonth ?? '' }}">
+            <a class="month-nav__link" href="{{ route('attendance.list', ['month' => $prevMonth ?? '']) }}">
                 <span class="month-nav__arrow material-symbols-outlined">arrow_back</span>
                 前月
             </a>
@@ -16,7 +16,7 @@
                 <img src="{{ asset('images/calendar.png') }}" alt="カレンダー" width="20" height="20">
                 {{ $currentMonth ?? '2023/06' }}
             </span>
-            <a class="month-nav__link" href="/attendance/list?month={{ $nextMonth ?? '' }}">
+            <a class="month-nav__link" href="{{ route('attendance.list', ['month' => $nextMonth ?? '']) }}">
                 翌月
                 <span class="month-nav__arrow material-symbols-outlined">arrow_forward</span>
             </a>
@@ -44,7 +44,7 @@
                         <td>{{ $attendance['total_time'] ?? '' }}</td>
                         <td>
                             @if (!empty($attendance['id']))
-                                <a class="data-table__link" href="/attendance/detail/{{ $attendance['id'] }}">詳細</a>
+                                <a class="data-table__link" href="{{ route('attendance.detail', $attendance['id']) }}">詳細</a>
                             @endif
                         </td>
                     </tr>

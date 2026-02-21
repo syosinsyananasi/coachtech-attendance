@@ -19,10 +19,10 @@
         </div>
         <nav class="header__nav">
             @section('nav')
-            <a class="header__nav-link" href="/attendance">勤怠</a>
-            <a class="header__nav-link" href="/attendance/list">勤怠一覧</a>
-            <a class="header__nav-link" href="/correction_request/list">申請</a>
-            <form action="/logout" method="POST">
+            <a class="header__nav-link" href="{{ route('attendance.index') }}">勤怠</a>
+            <a class="header__nav-link" href="{{ route('attendance.list') }}">勤怠一覧</a>
+            <a class="header__nav-link" href="{{ route('correction_request.list') }}">申請</a>
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>
             </form>

@@ -11,7 +11,7 @@
     <div class="content-page__inner">
         <h2 class="content-page__title">勤怠詳細</h2>
 
-        <form action="/attendance/detail/{{ $attendance->id ?? '' }}" method="POST" novalidate>
+        <form action="{{ route('attendance.update', $attendance->id ?? '') }}" method="POST" novalidate>
             @csrf
             <div class="detail-card {{ $isPending ? 'detail-card--bordered' : '' }}">
                 <div class="detail-card__row">

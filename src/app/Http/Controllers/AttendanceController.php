@@ -67,7 +67,7 @@ class AttendanceController extends Controller
             $attendance->update(['status' => 1]);
         }
 
-        return redirect('/attendance');
+        return redirect()->route('attendance.index');
     }
 
     public function list()
@@ -215,6 +215,6 @@ class AttendanceController extends Controller
             ]);
         }
 
-        return redirect('/attendance/detail/' . $id);
+        return redirect()->route('attendance.detail', $id);
     }
 }
