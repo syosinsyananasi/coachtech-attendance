@@ -516,12 +516,6 @@ button {
     outline: none;
 }
 
-.detail-card__note {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 2.1px;
-}
-
 .detail-card__error {
     color: #e74c3c;
     font-size: 12px;
