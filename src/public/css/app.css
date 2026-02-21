@@ -441,7 +441,7 @@ button {
 .detail-card__row {
     display: flex;
     align-items: center;
-    padding: 25px 64px;
+    padding: 30px 64px;
     border-bottom: 2px solid #e8e8e8;
 }
 
