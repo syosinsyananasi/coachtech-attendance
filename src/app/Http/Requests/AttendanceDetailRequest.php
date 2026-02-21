@@ -13,12 +13,35 @@ class AttendanceDetailRequest extends FormRequest
 
     public function rules()
     {
+        $clockIn = $this->input('clock_in');
+        $clockOut = $this->input('clock_out');
+
         return [
             'clock_in' => ['required', 'date_format:H:i'],
             'clock_out' => ['required', 'date_format:H:i', 'after:clock_in'],
             'rests' => ['nullable', 'array'],
-            'rests.*.start' => ['nullable', 'date_format:H:i'],
-            'rests.*.end' => ['nullable', 'date_format:H:i', 'after:rests.*.start'],
+            'rests.*.start' => [
+                'nullable',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) use ($clockIn, $clockOut) {
+                    if ($value && $clockIn && $value < $clockIn) {
+                        $fail('休憩時間が不適切な値です');
+                    }
+                    if ($value && $clockOut && $value > $clockOut) {
+                        $fail('休憩時間が不適切な値です');
+                    }
+                },
+            ],
+            'rests.*.end' => [
+                'nullable',
+                'date_format:H:i',
+                'after:rests.*.start',
+                function ($attribute, $value, $fail) use ($clockOut) {
+                    if ($value && $clockOut && $value > $clockOut) {
+                        $fail('休憩時間もしくは退勤時間が不適切な値です');
+                    }
+                },
+            ],
             'note' => ['required', 'string', 'max:25'],
         ];
     }

@@ -48,8 +48,10 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label"></span>
                     <div class="detail-card__value">
-                        @error('clock_in') <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
-                        @error('clock_out') <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                        <div class="detail-card__error-group">
+                            @error('clock_in') <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                            @error('clock_out') <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
                 @endif
@@ -75,8 +77,10 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label"></span>
                     <div class="detail-card__value">
-                        @error("rests.{$index}.start") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
-                        @error("rests.{$index}.end") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                        <div class="detail-card__error-group">
+                            @error("rests.{$index}.start") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                            @error("rests.{$index}.end") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
                 @endif
@@ -96,8 +100,10 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label"></span>
                     <div class="detail-card__value">
-                        @error("rests.{$nextIndex}.start") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
-                        @error("rests.{$nextIndex}.end") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                        <div class="detail-card__error-group">
+                            @error("rests.{$nextIndex}.start") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                            @error("rests.{$nextIndex}.end") <span class="detail-card__error" role="alert">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
                 @endif

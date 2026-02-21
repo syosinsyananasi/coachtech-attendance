@@ -250,6 +250,11 @@
     outline: none;
 }
 
+.detail-card__error-group {
+    display: flex;
+    flex-direction: column;
+}
+
 .detail-card__error {
     color: #e74c3c;
     font-size: 12px;
