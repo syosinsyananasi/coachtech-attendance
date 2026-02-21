@@ -35,20 +35,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($attendances ?? [] as $attendance)
+                    @foreach ($attendances ?? [] as $attendance)
                     <tr>
                         <td>{{ $attendance['date'] ?? '' }}</td>
                         <td>{{ $attendance['clock_in'] ?? '' }}</td>
                         <td>{{ $attendance['clock_out'] ?? '' }}</td>
                         <td>{{ $attendance['break_time'] ?? '' }}</td>
                         <td>{{ $attendance['total_time'] ?? '' }}</td>
-                        <td><a class="data-table__link" href="/admin/attendance/{{ $attendance['id'] ?? '' }}">詳細</a></td>
+                        <td>
+                            @if ($attendance['id'])
+                                <a class="data-table__link" href="/admin/attendance/{{ $attendance['id'] }}">詳細</a>
+                            @endif
+                        </td>
                     </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6">勤怠データがありません</td>
-                    </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

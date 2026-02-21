@@ -127,12 +127,25 @@ class AdminAttendanceController extends Controller
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $endOfMonth = Carbon::parse($month)->endOfMonth();
 
-        $attendances = Attendance::where('user_id', $id)
+        $dayNames = ['日','月','火','水','木','金','土'];
+
+        $attendanceRecords = Attendance::where('user_id', $id)
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->with('rests')
             ->orderBy('date')
             ->get()
-            ->map(function ($attendance) {
+            ->keyBy(function ($attendance) {
+                return $attendance->date->format('Y-m-d');
+            });
+
+        $attendances = collect();
+        $current = $startOfMonth->copy();
+        while ($current->lte($endOfMonth)) {
+            $dateKey = $current->format('Y-m-d');
+            $dateLabel = $current->format('m/d') . '(' . $dayNames[$current->dayOfWeek] . ')';
+
+            if ($attendanceRecords->has($dateKey)) {
+                $attendance = $attendanceRecords->get($dateKey);
                 $breakMinutes = $attendance->rests->sum(function ($rest) {
                     if ($rest->rest_start && $rest->rest_end) {
                         return $rest->rest_start->diffInMinutes($rest->rest_end);
@@ -144,15 +157,26 @@ class AdminAttendanceController extends Controller
                     $totalMinutes = $attendance->clock_in->diffInMinutes($attendance->clock_out) - $breakMinutes;
                 }
 
-                return [
+                $attendances->push([
                     'id' => $attendance->id,
-                    'date' => $attendance->date->format('m/d') . '(' . ['日','月','火','水','木','金','土'][$attendance->date->dayOfWeek] . ')',
+                    'date' => $dateLabel,
                     'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
                     'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
                     'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
-                ];
-            });
+                ]);
+            } else {
+                $attendances->push([
+                    'id' => null,
+                    'date' => $dateLabel,
+                    'clock_in' => '',
+                    'clock_out' => '',
+                    'break_time' => '',
+                    'total_time' => '',
+                ]);
+            }
+            $current->addDay();
+        }
 
         $staffName = $staff->name;
         $staffId = $staff->id;
