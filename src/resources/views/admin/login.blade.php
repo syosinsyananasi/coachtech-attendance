@@ -12,7 +12,7 @@
             <label class="auth-form__label" for="email">メールアドレス</label>
             <input class="auth-form__input auth-form__input--large" type="email" id="email" name="email" value="{{ old('email') }}">
             @error('email')
-                <p class="auth-form__error">{{ $message }}</p>
+                <p class="auth-form__error" role="alert">{{ $message }}</p>
             @enderror
         </div>
 
@@ -20,7 +20,7 @@
             <label class="auth-form__label" for="password">パスワード</label>
             <input class="auth-form__input auth-form__input--large" type="password" id="password" name="password">
             @error('password')
-                <p class="auth-form__error">{{ $message }}</p>
+                <p class="auth-form__error" role="alert">{{ $message }}</p>
             @enderror
         </div>
 

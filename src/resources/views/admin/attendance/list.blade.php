@@ -15,8 +15,8 @@
             <label for="date-picker" class="month-nav__current" style="cursor: pointer;">
                 <img src="{{ asset('images/calendar.png') }}" alt="カレンダー" width="20" height="20">
                 {{ $currentDateFormatted ?? '2023/06/01' }}
-                <input type="date" id="date-picker" value="{{ $currentDateValue ?? '' }}"
-                    style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;"
+                <input type="date" id="date-picker" class="sr-only" value="{{ $currentDateValue ?? '' }}"
+                    aria-label="日付選択"
                     onchange="if(this.value) window.location.href='/admin/attendance/list?date=' + this.value;">
             </label>
             <a class="month-nav__link" href="/admin/attendance/list?date={{ $nextDate ?? '' }}">
