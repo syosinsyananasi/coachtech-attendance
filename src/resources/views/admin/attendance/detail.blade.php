@@ -27,38 +27,75 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label">出勤・退勤</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="clock_in" value="{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}">
+                        <input class="detail-card__input" type="text" name="clock_in" value="{{ old('clock_in', $attendance->clock_in ? $attendance->clock_in->format('H:i') : '') }}">
                         <span class="detail-card__separator">〜</span>
-                        <input class="detail-card__input" type="text" name="clock_out" value="{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}">
+                        <input class="detail-card__input" type="text" name="clock_out" value="{{ old('clock_out', $attendance->clock_out ? $attendance->clock_out->format('H:i') : '') }}">
                     </div>
                 </div>
+                @if ($errors->has('clock_in') || $errors->has('clock_out'))
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        @error('clock_in') <span class="detail-card__error">{{ $message }}</span> @enderror
+                        @error('clock_out') <span class="detail-card__error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                @endif
 
-                @forelse ($rests ?? [] as $index => $rest)
+                @foreach ($rests ?? [] as $index => $rest)
                 <div class="detail-card__row">
                     <span class="detail-card__label">休憩{{ $index > 0 ? $index + 1 : '' }}</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" value="{{ $rest['start'] ?? '' }}">
+                        <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" value="{{ old("rests.{$index}.start", $rest['start'] ?? '') }}">
                         <span class="detail-card__separator">〜</span>
-                        <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" value="{{ $rest['end'] ?? '' }}">
+                        <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" value="{{ old("rests.{$index}.end", $rest['end'] ?? '') }}">
                     </div>
                 </div>
-                @empty
+                @if ($errors->has("rests.{$index}.start") || $errors->has("rests.{$index}.end"))
                 <div class="detail-card__row">
-                    <span class="detail-card__label">休憩</span>
+                    <span class="detail-card__label"></span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="rests[0][start]" value="">
-                        <span class="detail-card__separator">〜</span>
-                        <input class="detail-card__input" type="text" name="rests[0][end]" value="">
+                        @error("rests.{$index}.start") <span class="detail-card__error">{{ $message }}</span> @enderror
+                        @error("rests.{$index}.end") <span class="detail-card__error">{{ $message }}</span> @enderror
                     </div>
                 </div>
-                @endforelse
+                @endif
+                @endforeach
+
+                @php $nextIndex = count($rests ?? []); @endphp
+                <div class="detail-card__row" id="rest-new-row" data-index="{{ $nextIndex }}">
+                    <span class="detail-card__label">休憩{{ $nextIndex > 0 ? $nextIndex + 1 : '' }}</span>
+                    <div class="detail-card__value">
+                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][start]" value="{{ old("rests.{$nextIndex}.start") }}">
+                        <span class="detail-card__separator">〜</span>
+                        <input class="detail-card__input" type="text" name="rests[{{ $nextIndex }}][end]" value="{{ old("rests.{$nextIndex}.end") }}">
+                    </div>
+                </div>
+                @if ($errors->has("rests.{$nextIndex}.start") || $errors->has("rests.{$nextIndex}.end"))
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        @error("rests.{$nextIndex}.start") <span class="detail-card__error">{{ $message }}</span> @enderror
+                        @error("rests.{$nextIndex}.end") <span class="detail-card__error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                @endif
+                <div id="rest-container"></div>
 
                 <div class="detail-card__row">
                     <span class="detail-card__label">備考</span>
                     <div class="detail-card__value">
-                        <textarea class="detail-card__textarea" name="note">{{ $attendance->note ?? '' }}</textarea>
+                        <textarea class="detail-card__textarea" name="note">{{ old('note', $attendance->note ?? '') }}</textarea>
                     </div>
                 </div>
+                @error('note')
+                <div class="detail-card__row">
+                    <span class="detail-card__label"></span>
+                    <div class="detail-card__value">
+                        <span class="detail-card__error">{{ $message }}</span>
+                    </div>
+                </div>
+                @enderror
             </div>
 
             <div class="detail__actions">
@@ -67,4 +104,50 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.getElementById('rest-container');
+    var newRow = document.getElementById('rest-new-row');
+    var currentIndex = parseInt(newRow.dataset.index);
+
+    function watchRow(row) {
+        var inputs = row.querySelectorAll('.detail-card__input');
+        inputs.forEach(function (input) {
+            input.addEventListener('input', function () {
+                if (row.dataset.added) return;
+                var hasValue = false;
+                inputs.forEach(function (inp) {
+                    if (inp.value.trim() !== '') hasValue = true;
+                });
+                if (hasValue) {
+                    row.dataset.added = 'true';
+                    currentIndex++;
+                    addNewRow(currentIndex);
+                }
+            });
+        });
+    }
+
+    function addNewRow(index) {
+        var label = index > 0 ? '休憩' + (index + 1) : '休憩';
+        var row = document.createElement('div');
+        row.className = 'detail-card__row';
+        row.dataset.index = index;
+        row.innerHTML =
+            '<span class="detail-card__label">' + label + '</span>' +
+            '<div class="detail-card__value">' +
+            '<input class="detail-card__input" type="text" name="rests[' + index + '][start]" value="">' +
+            '<span class="detail-card__separator">〜</span>' +
+            '<input class="detail-card__input" type="text" name="rests[' + index + '][end]" value="">' +
+            '</div>';
+        container.appendChild(row);
+        watchRow(row);
+    }
+
+    watchRow(newRow);
+});
+</script>
 @endsection

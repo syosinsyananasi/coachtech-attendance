@@ -11,26 +11,27 @@
     <div class="content-page__inner">
         <h2 class="content-page__title">勤怠詳細</h2>
 
-        <div class="detail-card">
+        <div class="detail-card detail-card--bordered">
             <div class="detail-card__row">
                 <span class="detail-card__label">名前</span>
-                <span class="detail-card__value">{{ $attendance->user->name ?? '' }}</span>
+                <span class="detail-card__value detail-card__value--date">{{ $attendance->user->name ?? '' }}</span>
             </div>
 
             <div class="detail-card__row">
                 <span class="detail-card__label">日付</span>
                 <div class="detail-card__value">
-                    <span>{{ $year ?? '2023' }}年</span>
-                    <span>{{ $monthDay ?? '6月1日' }}</span>
+                    <span class="detail-card__text">{{ $year ?? '2023' }}年</span>
+                    <div class="detail-card__separator"></div>
+                    <span class="detail-card__text">{{ $monthDay ?? '6月1日' }}</span>
                 </div>
             </div>
 
             <div class="detail-card__row">
                 <span class="detail-card__label">出勤・退勤</span>
                 <div class="detail-card__value">
-                    <span>{{ $attendance->clock_in ?? '' }}</span>
-                    <span>〜</span>
-                    <span>{{ $attendance->clock_out ?? '' }}</span>
+                    <div class="detail-card__text">{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}</div>
+                    <span class="detail-card__separator">〜</span>
+                    <div class="detail-card__text">{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}</div>
                 </div>
             </div>
 
@@ -38,9 +39,9 @@
             <div class="detail-card__row">
                 <span class="detail-card__label">休憩{{ $index > 0 ? $index + 1 : '' }}</span>
                 <div class="detail-card__value">
-                    <span>{{ $rest['start'] ?? '' }}</span>
-                    <span>〜</span>
-                    <span>{{ $rest['end'] ?? '' }}</span>
+                    <div class="detail-card__text">{{ $rest['start'] ?? '' }}</div>
+                    <span class="detail-card__separator">〜</span>
+                    <div class="detail-card__text">{{ $rest['end'] ?? '' }}</div>
                 </div>
             </div>
             @empty
@@ -53,7 +54,7 @@
             <div class="detail-card__row">
                 <span class="detail-card__label">備考</span>
                 <div class="detail-card__value">
-                    <span class="detail-card__note">{{ $attendance->note ?? '' }}</span>
+                    <div>{{ $attendance->note ?? '' }}</div>
                 </div>
             </div>
         </div>

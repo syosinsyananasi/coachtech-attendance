@@ -59,6 +59,7 @@
 </div>
 @endsection
 
+@section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var label = document.querySelector('label[for="date-picker"]');
@@ -70,3 +71,4 @@
         });
     });
 </script>
+@endsection
