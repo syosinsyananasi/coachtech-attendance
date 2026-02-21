@@ -60,15 +60,5 @@
 @endsection
 
 @section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var label = document.querySelector('label[for="date-picker"]');
-        var picker = document.getElementById('date-picker');
-
-        label.addEventListener('click', function (e) {
-            e.preventDefault();
-            picker.showPicker();
-        });
-    });
-</script>
+<script src="{{ asset('js/date-picker.js') }}"></script>
 @endsection
