@@ -12,13 +12,10 @@
                 <span class="month-nav__arrow material-symbols-outlined">arrow_back</span>
                 前日
             </a>
-            <label for="date-picker" class="month-nav__current" style="cursor: pointer;">
+            <span class="month-nav__current">
                 <img src="{{ asset('images/calendar.png') }}" alt="カレンダー" width="20" height="20">
                 {{ $currentDateFormatted ?? '2023/06/01' }}
-                <input type="date" id="date-picker" class="sr-only" value="{{ $currentDateValue ?? '' }}"
-                    aria-label="日付選択"
-                    onchange="if(this.value) window.location.href='/admin/attendance/list?date=' + this.value;">
-            </label>
+            </span>
             <a class="month-nav__link" href="/admin/attendance/list?date={{ $nextDate ?? '' }}">
                 翌日
                 <span class="month-nav__arrow material-symbols-outlined">arrow_forward</span>
@@ -59,6 +56,3 @@
 </div>
 @endsection
 
-@section('scripts')
-<script src="{{ asset('js/date-picker.js') }}"></script>
-@endsection
