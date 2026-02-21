@@ -12,10 +12,13 @@
                 <span class="month-nav__arrow material-symbols-outlined">arrow_back</span>
                 前日
             </a>
-            <span class="month-nav__current">
+            <label for="date-picker" class="month-nav__current" style="cursor: pointer;">
                 <img src="{{ asset('images/calendar.png') }}" alt="カレンダー" width="20" height="20">
                 {{ $currentDateFormatted ?? '2023/06/01' }}
-            </span>
+                <input type="date" id="date-picker" value="{{ $currentDateValue ?? '' }}"
+                    style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;"
+                    onchange="if(this.value) window.location.href='/admin/attendance/list?date=' + this.value;">
+            </label>
             <a class="month-nav__link" href="/admin/attendance/list?date={{ $nextDate ?? '' }}">
                 翌日
                 <span class="month-nav__arrow material-symbols-outlined">arrow_forward</span>
@@ -55,3 +58,15 @@
     </div>
 </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var label = document.querySelector('label[for="date-picker"]');
+        var picker = document.getElementById('date-picker');
+
+        label.addEventListener('click', function (e) {
+            e.preventDefault();
+            picker.showPicker();
+        });
+    });
+</script>

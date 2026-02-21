@@ -44,11 +44,12 @@ class AdminAttendanceController extends Controller
 
         $currentDate = $date->format('Y年n月j日');
         $currentDateFormatted = $date->format('Y/m/d');
+        $currentDateValue = $date->format('Y-m-d');
         $prevDate = $date->copy()->subDay()->format('Y-m-d');
         $nextDate = $date->copy()->addDay()->format('Y-m-d');
 
         return view('admin.attendance.list', compact(
-            'attendances', 'currentDate', 'currentDateFormatted', 'prevDate', 'nextDate'
+            'attendances', 'currentDate', 'currentDateFormatted', 'currentDateValue', 'prevDate', 'nextDate'
         ));
     }
 
