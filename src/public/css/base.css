@@ -1,0 +1,89 @@
+/* ===== Reset & Base ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", "Noto Sans JP", sans-serif;
+    line-height: normal;
+    color: #000;
+    background-color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ===== Header Block ===== */
+.header {
+    background-color: #000;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.header__logo {
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.header__logo-image {
+    height: 100%;
+    width: auto;
+}
+
+.header__nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.header__nav-link {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.header__nav-link--normal {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.header__nav-button {
+    background: none;
+    border: none;
+    padding: 0 0 0 10px;
+    font-family: inherit;
+}
+
+/* ===== Utility ===== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
