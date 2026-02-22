@@ -9,8 +9,8 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            if ($request->is('admin/*') || $request->is('correction_request/approve/*')) {
-                return '/admin/login';
+            if ($request->is('admin/*') || $request->is('stamp_correction_request/approve/*')) {
+                return route('admin.login.create');
             }
             return route('login');
         }

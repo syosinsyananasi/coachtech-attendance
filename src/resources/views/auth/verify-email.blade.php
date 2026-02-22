@@ -9,7 +9,7 @@
         メール認証を完了してください。
     </p>
     <a class="verify__button" href="{{ url('/email/verify') }}">認証はこちらから</a>
-    <form class="verify__form" action="/email/verification-notification" method="POST">
+    <form class="verify__form" action="{{ route('verification.send') }}" method="POST">
         @csrf
         <button class="verify__link" type="submit">認証メールを再送する</button>
     </form>

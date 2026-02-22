@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
-    public function showLogin()
+    public function create()
     {
         return view('admin.login');
     }
 
-    public function login(AdminLoginRequest $request)
+    public function store(AdminLoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -27,12 +27,12 @@ class AdminAuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function destroy()
     {
         Auth::guard('admin')->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect()->route('admin.login.show');
+        return redirect()->route('admin.login.create');
     }
 }

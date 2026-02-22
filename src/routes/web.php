@@ -20,25 +20,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // 修正申請一覧（一般/管理者共用URL、ガードで分岐）
-Route::get('/correction_request/list', [CorrectionRequestController::class, 'list'])
+Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'list'])
     ->middleware('auth:admin,web')
     ->name('correction_request.list');
 
 // 修正申請承認（管理者のみ）
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/correction_request/approve/{id}', [CorrectionRequestController::class, 'approve'])->name('correction_request.approve');
-    Route::post('/correction_request/approve/{id}', [CorrectionRequestController::class, 'storeApproval'])->name('correction_request.storeApproval');
+    Route::get('/stamp_correction_request/approve/{id}', [CorrectionRequestController::class, 'approve'])->name('correction_request.approve');
+    Route::post('/stamp_correction_request/approve/{id}', [CorrectionRequestController::class, 'storeApproval'])->name('correction_request.storeApproval');
 });
 
 // 管理者認証
 Route::prefix('admin')->group(function () {
     Route::middleware('guest:admin')->group(function () {
-        Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login.show');
-        Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login');
+        Route::get('/login', [AdminAuthController::class, 'create'])->name('admin.login.create');
+        Route::post('/login', [AdminAuthController::class, 'store'])->name('admin.login.store');
     });
 
     Route::middleware('auth:admin')->group(function () {
-        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+        Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
         Route::get('/attendance/list', [AdminAttendanceController::class, 'list'])->name('admin.attendance.list');
         Route::get('/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance'])->name('admin.attendance.staff');
         Route::get('/attendance/staff/{id}/csv', [AdminAttendanceController::class, 'staffCsv'])->name('admin.attendance.staff.csv');
