@@ -17,14 +17,10 @@ class AdminAuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('admin.attendance.list');
-        }
+        Auth::guard('admin')->attempt($credentials);
+        $request->session()->regenerate();
 
-        return back()->withErrors([
-            'email' => 'ログイン情報が登録されていません',
-        ]);
+        return redirect()->route('admin.attendance.list');
     }
 
     public function destroy()

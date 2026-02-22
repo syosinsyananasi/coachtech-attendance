@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 
 class AdminLoginRequest extends FormRequest
 {
@@ -27,5 +29,16 @@ class AdminLoginRequest extends FormRequest
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
         ];
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isEmpty()) {
+                if (!Auth::guard('admin')->validate($this->only('email', 'password'))) {
+                    $validator->errors()->add('email', 'ログイン情報が登録されていません');
+                }
+            }
+        });
     }
 }
