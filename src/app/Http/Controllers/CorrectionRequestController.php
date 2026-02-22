@@ -28,7 +28,7 @@ class CorrectionRequestController extends Controller
                     'id' => $req->id,
                     'attendance_id' => $req->attendance_id,
                     'status_label' => $req->status === 0 ? '承認待ち' : '承認済み',
-                    'user_name' => $req->user->name,
+                    'user_name' => str_replace(' ', '', $req->user->name),
                     'target_date' => $req->attendance->date->format('Y/m/d'),
                     'reason' => $req->remark,
                     'request_date' => $req->created_at->format('Y/m/d'),
@@ -51,7 +51,7 @@ class CorrectionRequestController extends Controller
                 return [
                     'id' => $req->id,
                     'status_label' => $req->status === 0 ? '承認待ち' : '承認済み',
-                    'user_name' => $req->user->name,
+                    'user_name' => str_replace(' ', '', $req->user->name),
                     'target_date' => $req->attendance->date->format('Y/m/d'),
                     'reason' => $req->remark,
                     'request_date' => $req->created_at->format('Y/m/d'),
