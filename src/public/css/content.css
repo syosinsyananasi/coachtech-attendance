@@ -59,7 +59,8 @@
 /* ===== Tab Navigation Block ===== */
 .tab-nav {
     display: flex;
-    gap: 60px;
+    gap: 106px;
+    padding-left: 60px;
     padding-bottom: 15px;
     border-bottom: 1px solid #000;
     margin-bottom: 40px;
