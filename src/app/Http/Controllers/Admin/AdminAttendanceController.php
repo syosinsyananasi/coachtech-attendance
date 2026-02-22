@@ -207,6 +207,7 @@ class AdminAttendanceController extends Controller
 
         return new StreamedResponse(function () use ($attendances) {
             $handle = fopen('php://output', 'w');
+            fwrite($handle, "\xEF\xBB\xBF");
             fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
 
             foreach ($attendances as $attendance) {
