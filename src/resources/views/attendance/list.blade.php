@@ -45,6 +45,8 @@
                         <td>
                             @if (!empty($attendance['id']))
                                 <a class="data-table__link" href="{{ route('attendance.detail', $attendance['id']) }}">詳細</a>
+                            @else
+                                <a class="data-table__link" href="{{ route('attendance.detail.date', $attendance['raw_date']) }}">詳細</a>
                             @endif
                         </td>
                     </tr>

@@ -108,6 +108,7 @@ class AttendanceController extends Controller
 
                 $attendances->push([
                     'id' => $attendance->id,
+                    'raw_date' => $key,
                     'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
                     'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
@@ -117,6 +118,7 @@ class AttendanceController extends Controller
             } else {
                 $attendances->push([
                     'id' => null,
+                    'raw_date' => $key,
                     'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
                     'clock_in' => '',
                     'clock_out' => '',
@@ -131,6 +133,17 @@ class AttendanceController extends Controller
         $nextMonth = $startOfMonth->copy()->addMonth()->format('Y-m');
 
         return view('attendance.list', compact('attendances', 'currentMonth', 'prevMonth', 'nextMonth'));
+    }
+
+    public function detailByDate($date)
+    {
+        $user = Auth::user();
+        $attendance = Attendance::firstOrCreate(
+            ['user_id' => $user->id, 'date' => $date],
+            ['status' => 0]
+        );
+
+        return redirect()->route('attendance.detail', $attendance->id);
     }
 
     public function detail($id)
