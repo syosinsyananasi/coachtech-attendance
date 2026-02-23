@@ -2,6 +2,10 @@
 
 @section('title', '勤怠詳細（管理者）')
 
+@php
+    $isPending = $isPending ?? false;
+@endphp
+
 @section('content')
 <div class="content-page">
     <div class="content-page__inner">
@@ -27,9 +31,17 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label">出勤・退勤</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="clock_in" aria-label="出勤時間" value="{{ old('clock_in', $attendance->clock_in ? $attendance->clock_in->format('H:i') : '') }}">
+                        @if ($isPending)
+                            <div class="detail-card__text">{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}</div>
+                        @else
+                            <input class="detail-card__input" type="text" name="clock_in" aria-label="出勤時間" value="{{ old('clock_in', $attendance->clock_in ? $attendance->clock_in->format('H:i') : '') }}">
+                        @endif
                         <span class="detail-card__separator">〜</span>
-                        <input class="detail-card__input" type="text" name="clock_out" aria-label="退勤時間" value="{{ old('clock_out', $attendance->clock_out ? $attendance->clock_out->format('H:i') : '') }}">
+                        @if ($isPending)
+                            <div class="detail-card__text">{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}</div>
+                        @else
+                            <input class="detail-card__input" type="text" name="clock_out" aria-label="退勤時間" value="{{ old('clock_out', $attendance->clock_out ? $attendance->clock_out->format('H:i') : '') }}">
+                        @endif
                     </div>
                 </div>
                 @if ($errors->has('clock_in') || $errors->has('clock_out'))
@@ -48,9 +60,17 @@
                 <div class="detail-card__row">
                     <span class="detail-card__label">休憩{{ $index > 0 ? $index + 1 : '' }}</span>
                     <div class="detail-card__value">
-                        <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" aria-label="休憩{{ $index + 1 }}開始" value="{{ old("rests.{$index}.start", $rest['start'] ?? '') }}">
+                        @if ($isPending)
+                            <div class="detail-card__text">{{ $rest['start'] ?? '' }}</div>
+                        @else
+                            <input class="detail-card__input" type="text" name="rests[{{ $index }}][start]" aria-label="休憩{{ $index + 1 }}開始" value="{{ old("rests.{$index}.start", $rest['start'] ?? '') }}">
+                        @endif
                         <span class="detail-card__separator">〜</span>
-                        <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" aria-label="休憩{{ $index + 1 }}終了" value="{{ old("rests.{$index}.end", $rest['end'] ?? '') }}">
+                        @if ($isPending)
+                            <div class="detail-card__text">{{ $rest['end'] ?? '' }}</div>
+                        @else
+                            <input class="detail-card__input" type="text" name="rests[{{ $index }}][end]" aria-label="休憩{{ $index + 1 }}終了" value="{{ old("rests.{$index}.end", $rest['end'] ?? '') }}">
+                        @endif
                     </div>
                 </div>
                 @if ($errors->has("rests.{$index}.start") || $errors->has("rests.{$index}.end"))
@@ -66,6 +86,7 @@
                 @endif
                 @endforeach
 
+                @if (!$isPending)
                 @php $nextIndex = count($rests ?? []); @endphp
                 <div class="detail-card__row" id="rest-new-row" data-index="{{ $nextIndex }}">
                     <span class="detail-card__label">休憩{{ $nextIndex > 0 ? $nextIndex + 1 : '' }}</span>
@@ -87,11 +108,16 @@
                 </div>
                 @endif
                 <div id="rest-container"></div>
+                @endif
 
                 <div class="detail-card__row">
                     <label class="detail-card__label" for="note">備考</label>
                     <div class="detail-card__value">
-                        <textarea class="detail-card__textarea" name="note" id="note">{{ old('note', $attendance->note ?? '') }}</textarea>
+                        @if ($isPending)
+                            <div>{{ $attendance->note ?? '' }}</div>
+                        @else
+                            <textarea class="detail-card__textarea" name="note" id="note">{{ old('note', $attendance->note ?? '') }}</textarea>
+                        @endif
                     </div>
                 </div>
                 @error('note')
@@ -104,14 +130,20 @@
                 @enderror
             </div>
 
-            <div class="detail__actions">
-                <button class="detail__button" type="submit">修正</button>
-            </div>
+            @if ($isPending)
+                <p class="detail__warning">*承認待ちのため修正はできません。</p>
+            @else
+                <div class="detail__actions">
+                    <button class="detail__button" type="submit">修正</button>
+                </div>
+            @endif
         </form>
     </div>
 </div>
 @endsection
 
+@if (!$isPending)
 @section('scripts')
 <script src="{{ asset('js/rest-row.js') }}"></script>
 @endsection
+@endif

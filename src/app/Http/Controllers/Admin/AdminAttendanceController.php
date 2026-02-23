@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendanceDetailRequest;
 use App\Models\Attendance;
+use App\Models\CorrectionRequest;
 use App\Models\Rest;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,10 +18,15 @@ class AdminAttendanceController extends Controller
         $dateStr = request('date', Carbon::today()->format('Y-m-d'));
         $date = Carbon::parse($dateStr);
 
-        $attendances = Attendance::with(['user', 'rests'])
+        $attendanceRecords = Attendance::with(['user', 'rests'])
             ->where('date', $date->format('Y-m-d'))
             ->get()
-            ->map(function ($attendance) {
+            ->keyBy('user_id');
+
+        $attendances = User::all()->map(function ($user) use ($attendanceRecords) {
+            $attendance = $attendanceRecords->get($user->id);
+
+            if ($attendance) {
                 $breakMinutes = $attendance->rests->sum(function ($rest) {
                     if ($rest->rest_start && $rest->rest_end) {
                         return $rest->rest_start->diffInMinutes($rest->rest_end);
@@ -34,13 +40,23 @@ class AdminAttendanceController extends Controller
 
                 return [
                     'id' => $attendance->id,
-                    'user_name' => $attendance->user->name,
+                    'user_name' => str_replace(' ', '', $user->name),
                     'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
                     'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
                     'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
                 ];
-            });
+            }
+
+            return [
+                'id' => null,
+                'user_name' => str_replace(' ', '', $user->name),
+                'clock_in' => '',
+                'clock_out' => '',
+                'break_time' => '',
+                'total_time' => '',
+            ];
+        });
 
         $currentDate = $date->format('Y年n月j日');
         $currentDateFormatted = $date->format('Y/m/d');
@@ -57,6 +73,10 @@ class AdminAttendanceController extends Controller
     {
         $attendance = Attendance::with(['user', 'rests'])->findOrFail($id);
 
+        $isPending = CorrectionRequest::where('attendance_id', $id)
+            ->where('status', 0)
+            ->exists();
+
         $year = $attendance->date->format('Y');
         $monthDay = $attendance->date->format('n月j日');
 
@@ -67,7 +87,7 @@ class AdminAttendanceController extends Controller
             ];
         })->toArray();
 
-        return view('admin.attendance.detail', compact('attendance', 'year', 'monthDay', 'rests'));
+        return view('admin.attendance.detail', compact('attendance', 'year', 'monthDay', 'rests', 'isPending'));
     }
 
     public function update(AttendanceDetailRequest $request, $id)
