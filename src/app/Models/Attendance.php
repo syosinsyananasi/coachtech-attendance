@@ -9,6 +9,11 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    const STATUS_OFF = 0;      // 勤務外
+    const STATUS_WORKING = 1;  // 出勤中
+    const STATUS_ON_BREAK = 2; // 休憩中
+    const STATUS_FINISHED = 3; // 退勤済
+
     protected $fillable = [
         'user_id',
         'date',
