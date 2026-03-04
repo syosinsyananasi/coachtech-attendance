@@ -35,7 +35,7 @@ class AdminLoginRequest extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
-                if (!Auth::guard('admin')->validate($this->only('email', 'password'))) {
+                if (!Auth::guard('admin')->attempt($this->only('email', 'password'))) {
                     $validator->errors()->add('email', 'ログイン情報が登録されていません');
                 }
             }

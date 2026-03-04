@@ -15,9 +15,6 @@ class AdminAuthController extends Controller
 
     public function store(AdminLoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        Auth::guard('admin')->attempt($credentials);
         $request->session()->regenerate();
 
         return redirect()->route('admin.attendance.list');
