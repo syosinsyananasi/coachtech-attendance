@@ -35,7 +35,7 @@ class CorrectionRequestController extends Controller
                 ];
             });
 
-        return view('correction_request.list', compact('requests', 'tab'));
+        return view('stamp_correction_request.list', compact('requests', 'tab'));
     }
 
     private function adminList()
@@ -58,7 +58,7 @@ class CorrectionRequestController extends Controller
                 ];
             });
 
-        return view('admin.correction_request.list', compact('requests', 'tab'));
+        return view('admin.stamp_correction_request.list', compact('requests', 'tab'));
     }
 
     public function approve($id)
@@ -91,7 +91,7 @@ class CorrectionRequestController extends Controller
             })->toArray();
         }
 
-        return view('correction_request.approve', compact(
+        return view('stamp_correction_request.approve', compact(
             'correctionRequest', 'attendance', 'isApproved', 'year', 'monthDay', 'rests'
         ));
     }
