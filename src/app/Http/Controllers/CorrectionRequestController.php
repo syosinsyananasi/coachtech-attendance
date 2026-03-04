@@ -16,7 +16,7 @@ class CorrectionRequestController extends Controller
 
         $user = Auth::user();
         $tab = request('tab', 'pending');
-        $status = $tab === 'approved' ? 1 : 0;
+        $status = $tab === 'approved' ? CorrectionRequest::STATUS_APPROVED : CorrectionRequest::STATUS_PENDING;
 
         $requests = CorrectionRequest::where('user_id', $user->id)
             ->where('status', $status)
@@ -27,7 +27,7 @@ class CorrectionRequestController extends Controller
                 return [
                     'id' => $req->id,
                     'attendance_id' => $req->attendance_id,
-                    'status_label' => $req->status === 0 ? '承認待ち' : '承認済み',
+                    'status_label' => $req->status === CorrectionRequest::STATUS_PENDING ? '承認待ち' : '承認済み',
                     'user_name' => str_replace(' ', '', $req->user->name),
                     'target_date' => $req->attendance->date->format('Y/m/d'),
                     'reason' => $req->remark,
@@ -41,7 +41,7 @@ class CorrectionRequestController extends Controller
     private function adminList()
     {
         $tab = request('tab', 'pending');
-        $status = $tab === 'approved' ? 1 : 0;
+        $status = $tab === 'approved' ? CorrectionRequest::STATUS_APPROVED : CorrectionRequest::STATUS_PENDING;
 
         $requests = CorrectionRequest::where('status', $status)
             ->with(['attendance', 'user'])
@@ -50,7 +50,7 @@ class CorrectionRequestController extends Controller
             ->map(function ($req) {
                 return [
                     'id' => $req->id,
-                    'status_label' => $req->status === 0 ? '承認待ち' : '承認済み',
+                    'status_label' => $req->status === CorrectionRequest::STATUS_PENDING ? '承認待ち' : '承認済み',
                     'user_name' => str_replace(' ', '', $req->user->name),
                     'target_date' => $req->attendance->date->format('Y/m/d'),
                     'reason' => $req->remark,
@@ -70,7 +70,7 @@ class CorrectionRequestController extends Controller
         ])->findOrFail($id);
 
         $attendance = $correctionRequest->attendance;
-        $isApproved = $correctionRequest->status === 1;
+        $isApproved = $correctionRequest->status === CorrectionRequest::STATUS_APPROVED;
 
         $year = $attendance->date->format('Y');
         $monthDay = $attendance->date->format('n月j日');
@@ -103,7 +103,7 @@ class CorrectionRequestController extends Controller
             'attendance',
         ])->findOrFail($id);
 
-        if ($correctionRequest->status !== 0) {
+        if ($correctionRequest->status !== CorrectionRequest::STATUS_PENDING) {
             return redirect()->route('correction_request.approve', $id);
         }
 
@@ -129,7 +129,7 @@ class CorrectionRequestController extends Controller
         }
 
         $correctionRequest->update([
-            'status' => 1,
+            'status' => CorrectionRequest::STATUS_APPROVED,
             'approved_at' => Carbon::now(),
         ]);
 

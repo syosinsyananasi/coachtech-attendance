@@ -26,7 +26,7 @@ class AttendanceFactory extends Factory
             'date' => $date,
             'clock_in' => $clockIn,
             'clock_out' => $clockOut,
-            'status' => 3,
+            'status' => Attendance::STATUS_FINISHED,
         ];
     }
 }

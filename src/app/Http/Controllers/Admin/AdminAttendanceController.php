@@ -74,7 +74,7 @@ class AdminAttendanceController extends Controller
         $attendance = Attendance::with(['user', 'rests'])->findOrFail($id);
 
         $isPending = CorrectionRequest::where('attendance_id', $id)
-            ->where('status', 0)
+            ->where('status', CorrectionRequest::STATUS_PENDING)
             ->exists();
 
         $year = $attendance->date->format('Y');

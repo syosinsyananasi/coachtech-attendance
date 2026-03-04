@@ -39,7 +39,7 @@ class AttendanceSeeder extends Seeder
                     'date' => $date->format('Y-m-d'),
                     'clock_in' => $clockIn,
                     'clock_out' => $clockOut,
-                    'status' => 3,
+                    'status' => Attendance::STATUS_FINISHED,
                 ]);
 
                 $restStart = (clone $clockIn)->setTime(12, 0, 0);

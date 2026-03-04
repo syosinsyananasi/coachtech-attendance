@@ -22,7 +22,7 @@ class AttendanceController extends Controller
             ->where('date', $today->format('Y-m-d'))
             ->first();
 
-        $status = $attendance ? $attendance->status : 0;
+        $status = $attendance ? $attendance->status : Attendance::STATUS_OFF;
 
         return view('attendance.index', compact('status'));
     }
@@ -43,20 +43,20 @@ class AttendanceController extends Controller
                 'user_id' => $user->id,
                 'date' => $today->format('Y-m-d'),
                 'clock_in' => $now,
-                'status' => 1,
+                'status' => Attendance::STATUS_WORKING,
             ]);
-        } elseif ($action === 'clock_out' && $attendance && $attendance->status === 1) {
+        } elseif ($action === 'clock_out' && $attendance && $attendance->status === Attendance::STATUS_WORKING) {
             $attendance->update([
                 'clock_out' => $now,
-                'status' => 3,
+                'status' => Attendance::STATUS_FINISHED,
             ]);
-        } elseif ($action === 'break_start' && $attendance && $attendance->status === 1) {
+        } elseif ($action === 'break_start' && $attendance && $attendance->status === Attendance::STATUS_WORKING) {
             Rest::create([
                 'attendance_id' => $attendance->id,
                 'rest_start' => $now,
             ]);
-            $attendance->update(['status' => 2]);
-        } elseif ($action === 'break_end' && $attendance && $attendance->status === 2) {
+            $attendance->update(['status' => Attendance::STATUS_ON_BREAK]);
+        } elseif ($action === 'break_end' && $attendance && $attendance->status === Attendance::STATUS_ON_BREAK) {
             $rest = Rest::where('attendance_id', $attendance->id)
                 ->whereNull('rest_end')
                 ->latest()
@@ -64,7 +64,7 @@ class AttendanceController extends Controller
             if ($rest) {
                 $rest->update(['rest_end' => $now]);
             }
-            $attendance->update(['status' => 1]);
+            $attendance->update(['status' => Attendance::STATUS_WORKING]);
         }
 
         return redirect()->route('attendance.index');
@@ -140,7 +140,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'date' => $date],
-            ['status' => 0]
+            ['status' => Attendance::STATUS_OFF]
         );
 
         return redirect()->route('attendance.detail', $attendance->id);
@@ -156,7 +156,7 @@ class AttendanceController extends Controller
         }
 
         $pendingRequest = CorrectionRequest::where('attendance_id', $id)
-            ->where('status', 0)
+            ->where('status', CorrectionRequest::STATUS_PENDING)
             ->with('correctionRequestRests')
             ->first();
 
@@ -207,7 +207,7 @@ class AttendanceController extends Controller
             'request_clock_in' => $clockIn,
             'request_clock_out' => $clockOut,
             'remark' => $request->input('note'),
-            'status' => 0,
+            'status' => CorrectionRequest::STATUS_PENDING,
         ]);
 
         $rests = $request->input('rests', []);

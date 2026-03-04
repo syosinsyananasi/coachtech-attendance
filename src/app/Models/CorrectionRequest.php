@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class CorrectionRequest extends Model
 {
+    const STATUS_PENDING = 0;   // 承認待ち
+    const STATUS_APPROVED = 1;  // 承認済み
+
     protected $fillable = [
         'user_id',
         'attendance_id',
