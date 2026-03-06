@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function stamp()
     {
         $user = Auth::user();
         $today = Carbon::today();
@@ -67,10 +67,10 @@ class AttendanceController extends Controller
             $attendance->update(['status' => Attendance::STATUS_WORKING]);
         }
 
-        return redirect()->route('attendance.index');
+        return redirect()->route('attendance.stamp');
     }
 
-    public function list()
+    public function index()
     {
         $user = Auth::user();
         $month = request('month', Carbon::now()->format('Y-m'));
@@ -135,7 +135,7 @@ class AttendanceController extends Controller
         return view('attendance.list', compact('attendances', 'currentMonth', 'prevMonth', 'nextMonth'));
     }
 
-    public function detailByDate($date)
+    public function redirectByDate($date)
     {
         $user = Auth::user();
         $attendance = Attendance::firstOrCreate(
@@ -143,10 +143,10 @@ class AttendanceController extends Controller
             ['status' => Attendance::STATUS_OFF]
         );
 
-        return redirect()->route('attendance.detail', $attendance->id);
+        return redirect()->route('attendance.show', $attendance->id);
     }
 
-    public function detail($id)
+    public function show($id)
     {
         $attendance = Attendance::with(['user', 'rests'])->findOrFail($id);
         $user = Auth::user();
@@ -228,6 +228,6 @@ class AttendanceController extends Controller
             ]);
         }
 
-        return redirect()->route('attendance.detail', $id);
+        return redirect()->route('attendance.show', $id);
     }
 }

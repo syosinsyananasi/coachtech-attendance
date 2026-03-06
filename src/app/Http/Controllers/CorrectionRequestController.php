@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CorrectionRequestController extends Controller
 {
-    public function list()
+    public function index()
     {
         if (Auth::guard('admin')->check()) {
             return $this->adminList();
@@ -61,7 +61,7 @@ class CorrectionRequestController extends Controller
         return view('admin.stamp_correction_request.list', compact('requests', 'tab'));
     }
 
-    public function approve($id)
+    public function show($id)
     {
         $correctionRequest = CorrectionRequest::with([
             'attendance.user',
@@ -96,7 +96,7 @@ class CorrectionRequestController extends Controller
         ));
     }
 
-    public function storeApproval($id)
+    public function approve($id)
     {
         $correctionRequest = CorrectionRequest::with([
             'correctionRequestRests',
@@ -104,7 +104,7 @@ class CorrectionRequestController extends Controller
         ])->findOrFail($id);
 
         if ($correctionRequest->status !== CorrectionRequest::STATUS_PENDING) {
-            return redirect()->route('correction_request.approve', $id);
+            return redirect()->route('correction_request.show', $id);
         }
 
         $attendance = $correctionRequest->attendance;
@@ -133,6 +133,6 @@ class CorrectionRequestController extends Controller
             'approved_at' => Carbon::now(),
         ]);
 
-        return redirect()->route('correction_request.approve', $id);
+        return redirect()->route('correction_request.show', $id);
     }
 }

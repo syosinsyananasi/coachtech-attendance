@@ -17,7 +17,7 @@ class AdminAuthController extends Controller
     {
         $request->session()->regenerate();
 
-        return redirect()->route('admin.attendance.list');
+        return redirect()->route('admin.attendance.index');
     }
 
     public function destroy()

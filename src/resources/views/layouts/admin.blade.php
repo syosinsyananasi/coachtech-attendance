@@ -17,9 +17,9 @@
             <img class="header__logo-image" src="{{ asset('images/COACHTECHヘッダーロゴ.png') }}" alt="CoachTech">
         </div>
         <nav class="header__nav">
-            <a class="header__nav-link" href="{{ route('admin.attendance.list') }}">勤怠一覧</a>
-            <a class="header__nav-link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
-            <a class="header__nav-link" href="{{ route('correction_request.list') }}">申請一覧</a>
+            <a class="header__nav-link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a>
+            <a class="header__nav-link" href="{{ route('admin.staff.index') }}">スタッフ一覧</a>
+            <a class="header__nav-link" href="{{ route('correction_request.index') }}">申請一覧</a>
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>

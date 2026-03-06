@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminAttendanceController extends Controller
 {
-    public function list()
+    public function index()
     {
         $dateStr = request('date', Carbon::today()->format('Y-m-d'));
         $date = Carbon::parse($dateStr);
@@ -69,7 +69,7 @@ class AdminAttendanceController extends Controller
         ));
     }
 
-    public function detail($id)
+    public function show($id)
     {
         $attendance = Attendance::with(['user', 'rests'])->findOrFail($id);
 
@@ -124,10 +124,10 @@ class AdminAttendanceController extends Controller
             }
         }
 
-        return redirect()->route('admin.attendance.detail', $id);
+        return redirect()->route('admin.attendance.show', $id);
     }
 
-    public function staffList()
+    public function indexStaff()
     {
         $staffs = User::all()->map(function ($user) {
             return [
@@ -140,7 +140,7 @@ class AdminAttendanceController extends Controller
         return view('admin.staff.list', compact('staffs'));
     }
 
-    public function staffAttendance($id)
+    public function showStaff($id)
     {
         $staff = User::findOrFail($id);
         $month = request('month', Carbon::now()->format('Y-m'));
@@ -209,7 +209,7 @@ class AdminAttendanceController extends Controller
         ));
     }
 
-    public function staffCsv($id)
+    public function exportCsv($id)
     {
         $staff = User::findOrFail($id);
         $month = request('month', Carbon::now()->format('Y/m'));
