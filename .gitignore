@@ -1,3 +1,4 @@
 /docs/*
 /docker/mysql/data/
 CLAUDE.md
+.env.testing
