@@ -2,3 +2,5 @@
 /docker/mysql/data/
 CLAUDE.md
 .env.testing
+
+!docs/er-diagram.png
