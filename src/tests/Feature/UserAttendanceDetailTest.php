@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Admin;
 use App\Models\Attendance;
+use App\Models\CorrectionRequest;
 use App\Models\Rest;
 use App\Models\User;
 use Carbon\Carbon;
