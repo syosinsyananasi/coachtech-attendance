@@ -13,9 +13,9 @@
 
         <nav class="tab-nav">
             <a class="tab-nav__item {{ $currentTab === 'pending' ? 'tab-nav__item--active' : 'tab-nav__item--inactive' }}"
-               href="{{ route('correction_request.index', ['tab' => 'pending']) }}">承認待ち</a>
+                href="{{ route('correction_request.index', ['tab' => 'pending']) }}">承認待ち</a>
             <a class="tab-nav__item {{ $currentTab === 'approved' ? 'tab-nav__item--active' : 'tab-nav__item--inactive' }}"
-               href="{{ route('correction_request.index', ['tab' => 'approved']) }}">承認済み</a>
+                href="{{ route('correction_request.index', ['tab' => 'approved']) }}">承認済み</a>
         </nav>
 
         <div class="table-card">
