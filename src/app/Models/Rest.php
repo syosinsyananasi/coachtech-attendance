@@ -24,4 +24,9 @@ class Rest extends Model
     {
         return $this->belongsTo(Attendance::class);
     }
+
+    public function correctionRequestRests()
+    {
+        return $this->hasMany(CorrectionRequestRest::class);
+    }
 }
