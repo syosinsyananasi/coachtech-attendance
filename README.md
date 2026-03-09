@@ -161,16 +161,13 @@ DB_PASSWORD=root
 <server name="DB_DATABASE" value="demo_test"/>
 ```
 
-### テスト実行
-
-
-# 全テスト実行
+### 全テスト実行
 
 ```bash
 make test
 ```
 
-# 特定のテストクラスを実行
+### 特定のテストクラスを実行
 
 ```bash
 docker-compose exec php php artisan test --filter=テストクラス名
