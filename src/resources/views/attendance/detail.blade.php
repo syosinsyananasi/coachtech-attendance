@@ -9,7 +9,7 @@
 @section('content')
 <div class="content-page">
     <div class="content-page__inner">
-        <h2 class="content-page__title">勤怠詳細</h2>
+        <h1 class="content-page__title">勤怠詳細</h1>
 
         <form action="{{ route('attendance.update', $attendance->id ?? '') }}" method="POST" novalidate>
             @csrf

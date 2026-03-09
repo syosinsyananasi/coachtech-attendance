@@ -5,7 +5,7 @@
 @section('content')
 <div class="content-page">
     <div class="content-page__inner">
-        <h2 class="content-page__title">{{ $currentDate ?? '2023年6月1日' }}の勤怠</h2>
+        <h1 class="content-page__title">{{ $currentDate ?? '2023年6月1日' }}の勤怠</h1>
 
         <div class="month-nav">
             <a class="month-nav__link" href="{{ route('admin.attendance.index', ['date' => $prevDate ?? '']) }}">

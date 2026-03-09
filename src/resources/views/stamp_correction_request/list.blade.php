@@ -9,7 +9,7 @@
 @section('content')
 <div class="content-page">
     <div class="content-page__inner">
-        <h2 class="content-page__title">申請一覧</h2>
+        <h1 class="content-page__title">申請一覧</h1>
 
         <nav class="tab-nav">
             <a class="tab-nav__item {{ $currentTab === 'pending' ? 'tab-nav__item--active' : 'tab-nav__item--inactive' }}"

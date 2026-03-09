@@ -5,7 +5,7 @@
 @section('content')
 <div class="content-page">
     <div class="content-page__inner">
-        <h2 class="content-page__title">{{ $staffName ?? '' }}さんの勤怠</h2>
+        <h1 class="content-page__title">{{ $staffName ?? '' }}さんの勤怠</h1>
 
         <div class="month-nav">
             <a class="month-nav__link" href="{{ route('admin.staff.show', ['id' => $staffId ?? '', 'month' => $prevMonth ?? '']) }}">

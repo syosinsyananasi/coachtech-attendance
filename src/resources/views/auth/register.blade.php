@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="auth-form">
-    <h2 class="auth-form__title">会員登録</h2>
+    <h1 class="auth-form__title">会員登録</h1>
     <form action="{{ route('register') }}" method="POST" novalidate>
         @csrf
         <div class="auth-form__group">

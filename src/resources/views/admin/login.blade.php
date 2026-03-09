@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="auth-form">
-    <h2 class="auth-form__title">管理者ログイン</h2>
+    <h1 class="auth-form__title">管理者ログイン</h1>
 
     <form action="{{ route('admin.login.store') }}" method="POST" novalidate>
         @csrf
