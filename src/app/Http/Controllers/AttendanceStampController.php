@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AttendanceActionRequest;
+use App\Http\Requests\AttendanceStampRequest;
 use App\Models\Attendance;
 use App\Models\Rest;
 use Carbon\Carbon;
@@ -23,7 +23,7 @@ class AttendanceStampController extends Controller
         return view('attendance.index', compact('status'));
     }
 
-    public function store(AttendanceActionRequest $request)
+    public function store(AttendanceStampRequest $request)
     {
         $user = Auth::user();
         $today = Carbon::today();

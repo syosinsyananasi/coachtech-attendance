@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AttendanceActionRequest extends FormRequest
+class AttendanceStampRequest extends FormRequest
 {
     public function authorize()
     {

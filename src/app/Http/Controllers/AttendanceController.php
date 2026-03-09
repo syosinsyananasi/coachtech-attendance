@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AttendanceDetailRequest;
+use App\Http\Requests\AttendanceUpdateRequest;
 use App\Models\Attendance;
 use App\Models\CorrectionRequest;
 use App\Models\CorrectionRequestRest;
@@ -123,7 +123,7 @@ class AttendanceController extends Controller
         return view('attendance.detail', compact('attendance', 'year', 'monthDay', 'rests', 'isPending'));
     }
 
-    public function update(AttendanceDetailRequest $request, $id)
+    public function update(AttendanceUpdateRequest $request, $id)
     {
         $attendance = Attendance::with('rests')->findOrFail($id);
         $user = Auth::user();

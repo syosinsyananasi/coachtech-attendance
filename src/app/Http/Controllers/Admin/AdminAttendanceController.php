@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AttendanceDetailRequest;
+use App\Http\Requests\AttendanceUpdateRequest;
 use App\Models\Attendance;
 use App\Models\CorrectionRequest;
 use App\Models\Rest;
@@ -83,7 +83,7 @@ class AdminAttendanceController extends Controller
         return view('admin.attendance.detail', compact('attendance', 'year', 'monthDay', 'rests', 'isPending'));
     }
 
-    public function update(AttendanceDetailRequest $request, $id)
+    public function update(AttendanceUpdateRequest $request, $id)
     {
         $attendance = Attendance::with('rests')->findOrFail($id);
         $date = $attendance->date->format('Y-m-d');
