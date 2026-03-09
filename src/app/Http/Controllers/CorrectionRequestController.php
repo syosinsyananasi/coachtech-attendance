@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\CorrectionRequest;
 use App\Models\Rest;
 use Carbon\Carbon;
@@ -111,9 +112,13 @@ class CorrectionRequestController extends Controller
         }
 
         $attendance = $correctionRequest->attendance;
+        $clockOut = $correctionRequest->request_clock_out;
+        $status = $clockOut ? Attendance::STATUS_FINISHED : Attendance::STATUS_WORKING;
+
         $attendance->update([
             'clock_in' => $correctionRequest->request_clock_in,
-            'clock_out' => $correctionRequest->request_clock_out,
+            'clock_out' => $clockOut,
+            'status' => $status,
         ]);
 
         foreach ($correctionRequest->correctionRequestRests as $correctionRequestRest) {

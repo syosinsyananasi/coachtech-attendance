@@ -88,9 +88,13 @@ class AdminAttendanceController extends Controller
         $attendance = Attendance::with('rests')->findOrFail($id);
         $date = $attendance->date->format('Y-m-d');
 
+        $clockOut = $request->input('clock_out');
+        $status = $clockOut ? Attendance::STATUS_FINISHED : Attendance::STATUS_WORKING;
+
         $attendance->update([
             'clock_in' => Carbon::parse($date . ' ' . $request->input('clock_in')),
-            'clock_out' => Carbon::parse($date . ' ' . $request->input('clock_out')),
+            'clock_out' => $clockOut ? Carbon::parse($date . ' ' . $clockOut) : null,
+            'status' => $status,
         ]);
 
         $rests = $request->input('rests', []);
