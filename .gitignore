@@ -4,3 +4,4 @@ CLAUDE.md
 .env.testing
 
 !docs/er-diagram.png
+!docs/table-specification.md
