@@ -20,7 +20,7 @@
             <a class="header__nav-link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a>
             <a class="header__nav-link" href="{{ route('admin.staff.index') }}">スタッフ一覧</a>
             <a class="header__nav-link" href="{{ route('correction_request.index') }}">申請一覧</a>
-            <form action="{{ route('admin.logout') }}" method="POST">
+            <form action="{{ route('admin.logout') }}" method="POST" novalidate>
                 @csrf
                 <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>
             </form>

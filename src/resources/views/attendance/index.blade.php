@@ -16,7 +16,7 @@
     <a class="header__nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
     <a class="header__nav-link" href="{{ route('correction_request.index') }}">申請</a>
 @endif
-<form action="{{ route('logout') }}" method="POST">
+<form action="{{ route('logout') }}" method="POST" novalidate>
     @csrf
     <button type="submit" class="header__nav-link header__nav-button">ログアウト</button>
 </form>
@@ -30,23 +30,23 @@
         <p class="attendance__time" id="current-time"></p>
 
         @if ($currentStatus === App\Models\Attendance::STATUS_OFF)
-            <form action="{{ route('attendance.store') }}" method="POST">
+            <form action="{{ route('attendance.store') }}" method="POST" novalidate>
                 @csrf
                 <button class="attendance__button" type="submit" name="action" value="clock_in">出勤</button>
             </form>
         @elseif ($currentStatus === App\Models\Attendance::STATUS_WORKING)
             <div class="attendance__actions">
-                <form action="{{ route('attendance.store') }}" method="POST">
+                <form action="{{ route('attendance.store') }}" method="POST" novalidate>
                     @csrf
                     <button class="attendance__button" type="submit" name="action" value="clock_out">退勤</button>
                 </form>
-                <form action="{{ route('attendance.store') }}" method="POST">
+                <form action="{{ route('attendance.store') }}" method="POST" novalidate>
                     @csrf
                     <button class="attendance__button attendance__button--white" type="submit" name="action" value="break_start">休憩入</button>
                 </form>
             </div>
         @elseif ($currentStatus === App\Models\Attendance::STATUS_ON_BREAK)
-            <form action="{{ route('attendance.store') }}" method="POST">
+            <form action="{{ route('attendance.store') }}" method="POST" novalidate>
                 @csrf
                 <button class="attendance__button attendance__button--white" type="submit" name="action" value="break_end">休憩戻</button>
             </form>
