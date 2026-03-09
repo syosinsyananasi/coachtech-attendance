@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use App\Models\CorrectionRequest;
 use App\Models\Rest;
 use App\Models\User;
+use App\Services\AttendanceTimeService;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -27,24 +28,16 @@ class AdminAttendanceController extends Controller
             $attendance = $attendanceRecords->get($user->id);
 
             if ($attendance && $attendance->clock_in) {
-                $breakMinutes = $attendance->rests->sum(function ($rest) {
-                    if ($rest->rest_start && $rest->rest_end) {
-                        return $rest->rest_start->diffInMinutes($rest->rest_end);
-                    }
-                    return 0;
-                });
-                $totalMinutes = 0;
-                if ($attendance->clock_in && $attendance->clock_out) {
-                    $totalMinutes = $attendance->clock_in->diffInMinutes($attendance->clock_out) - $breakMinutes;
-                }
+                $breakMinutes = AttendanceTimeService::calculateBreakMinutes($attendance);
+                $totalMinutes = AttendanceTimeService::calculateTotalMinutes($attendance, $breakMinutes);
 
                 return [
                     'id' => $attendance->id,
                     'user_name' => str_replace(' ', '', $user->name),
                     'clock_in' => $attendance->clock_in->format('H:i'),
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
-                    'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
-                    'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
+                    'break_time' => AttendanceTimeService::formatMinutes($breakMinutes),
+                    'total_time' => AttendanceTimeService::formatMinutes($totalMinutes),
                 ];
             }
 
@@ -176,24 +169,16 @@ class AdminAttendanceController extends Controller
 
             $attendance = $attendanceRecords->get($dateKey);
             if ($attendance && $attendance->clock_in) {
-                $breakMinutes = $attendance->rests->sum(function ($rest) {
-                    if ($rest->rest_start && $rest->rest_end) {
-                        return $rest->rest_start->diffInMinutes($rest->rest_end);
-                    }
-                    return 0;
-                });
-                $totalMinutes = 0;
-                if ($attendance->clock_in && $attendance->clock_out) {
-                    $totalMinutes = $attendance->clock_in->diffInMinutes($attendance->clock_out) - $breakMinutes;
-                }
+                $breakMinutes = AttendanceTimeService::calculateBreakMinutes($attendance);
+                $totalMinutes = AttendanceTimeService::calculateTotalMinutes($attendance, $breakMinutes);
 
                 $attendances->push([
                     'id' => $attendance->id,
                     'date' => $dateLabel,
                     'clock_in' => $attendance->clock_in->format('H:i'),
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
-                    'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
-                    'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
+                    'break_time' => AttendanceTimeService::formatMinutes($breakMinutes),
+                    'total_time' => AttendanceTimeService::formatMinutes($totalMinutes),
                 ]);
             } else {
                 $attendances->push([
@@ -252,23 +237,15 @@ class AdminAttendanceController extends Controller
             fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
 
             foreach ($attendances as $attendance) {
-                $breakMinutes = $attendance->rests->sum(function ($rest) {
-                    if ($rest->rest_start && $rest->rest_end) {
-                        return $rest->rest_start->diffInMinutes($rest->rest_end);
-                    }
-                    return 0;
-                });
-                $totalMinutes = 0;
-                if ($attendance->clock_in && $attendance->clock_out) {
-                    $totalMinutes = $attendance->clock_in->diffInMinutes($attendance->clock_out) - $breakMinutes;
-                }
+                $breakMinutes = AttendanceTimeService::calculateBreakMinutes($attendance);
+                $totalMinutes = AttendanceTimeService::calculateTotalMinutes($attendance, $breakMinutes);
 
                 fputcsv($handle, [
                     $attendance->date->format('Y/m/d'),
                     $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
                     $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
-                    sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
-                    sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
+                    AttendanceTimeService::formatMinutes($breakMinutes),
+                    AttendanceTimeService::formatMinutes($totalMinutes),
                 ]);
             }
 

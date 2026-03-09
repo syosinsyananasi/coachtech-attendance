@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use App\Models\Rest;
 use App\Models\CorrectionRequest;
 use App\Models\CorrectionRequestRest;
+use App\Services\AttendanceTimeService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
@@ -95,16 +96,8 @@ class AttendanceController extends Controller
             $attendance = $records->get($key);
 
             if ($attendance && $attendance->clock_in) {
-                $breakMinutes = $attendance->rests->sum(function ($rest) {
-                    if ($rest->rest_start && $rest->rest_end) {
-                        return $rest->rest_start->diffInMinutes($rest->rest_end);
-                    }
-                    return 0;
-                });
-                $totalMinutes = 0;
-                if ($attendance->clock_in && $attendance->clock_out) {
-                    $totalMinutes = $attendance->clock_in->diffInMinutes($attendance->clock_out) - $breakMinutes;
-                }
+                $breakMinutes = AttendanceTimeService::calculateBreakMinutes($attendance);
+                $totalMinutes = AttendanceTimeService::calculateTotalMinutes($attendance, $breakMinutes);
 
                 $attendances->push([
                     'id' => $attendance->id,
@@ -112,8 +105,8 @@ class AttendanceController extends Controller
                     'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
                     'clock_in' => $attendance->clock_in->format('H:i'),
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
-                    'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
-                    'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
+                    'break_time' => AttendanceTimeService::formatMinutes($breakMinutes),
+                    'total_time' => AttendanceTimeService::formatMinutes($totalMinutes),
                 ]);
             } else {
                 $attendances->push([
