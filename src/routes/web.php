@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceStampController;
 use App\Http\Controllers\CorrectionRequestController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminAttendanceController;
+use App\Http\Controllers\Admin\AdminStaffController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -12,8 +14,8 @@ Route::get('/', function () {
 
 // 一般ユーザー（認証 + メール認証済み）
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/attendance', [AttendanceController::class, 'stamp'])->name('attendance.stamp');
-    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/attendance', [AttendanceStampController::class, 'stamp'])->name('attendance.stamp');
+    Route::post('/attendance', [AttendanceStampController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance/detail/date/{date}', [AttendanceController::class, 'redirectByDate'])->name('attendance.redirectByDate');
     Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
@@ -43,11 +45,11 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.index');
-        Route::get('/attendance/staff/{id}', [AdminAttendanceController::class, 'showStaff'])->name('admin.staff.show');
-        Route::get('/attendance/staff/{id}/csv', [AdminAttendanceController::class, 'exportCsv'])->name('admin.staff.exportCsv');
-        Route::get('/attendance/staff/{staffId}/date/{date}', [AdminAttendanceController::class, 'redirectByDateForStaff'])->name('admin.staff.redirectByDate');
+        Route::get('/attendance/staff/{id}', [AdminStaffController::class, 'show'])->name('admin.staff.show');
+        Route::get('/attendance/staff/{id}/csv', [AdminStaffController::class, 'exportCsv'])->name('admin.staff.exportCsv');
+        Route::get('/attendance/staff/{staffId}/date/{date}', [AdminStaffController::class, 'redirectByDate'])->name('admin.staff.redirectByDate');
         Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])->name('admin.attendance.show');
         Route::post('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('admin.attendance.update');
-        Route::get('/staff/list', [AdminAttendanceController::class, 'indexStaff'])->name('admin.staff.index');
+        Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.index');
     });
 });
