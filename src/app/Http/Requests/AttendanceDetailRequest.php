@@ -56,7 +56,7 @@ class AttendanceDetailRequest extends FormRequest
             'clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
             'rests.*.start.date_format' => '休憩開始時間はHH:MM形式で入力してください',
             'rests.*.end.date_format' => '休憩終了時間はHH:MM形式で入力してください',
-            'rests.*.end.after' => '休憩時間が勤務時間外です',
+            'rests.*.end.after' => '休憩時間もしくは退勤時間が不適切な値です',
             'note.required' => '備考を記入してください',
             'note.max' => '備考は25文字以内で入力してください',
         ];
