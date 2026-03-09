@@ -33,6 +33,7 @@ fresh:
 # テスト用データベース作成
 create-test-db:
 	docker-compose exec mysql mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS demo_test;"
+	docker-compose exec php php artisan migrate --env=testing
 
 # 全テスト実行
 test:
