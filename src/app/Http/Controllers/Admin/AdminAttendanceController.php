@@ -104,13 +104,22 @@ class AdminAttendanceController extends Controller
         $originalRests = $attendance->rests;
 
         foreach ($rests as $index => $restData) {
-            if (empty($restData['start']) && empty($restData['end'])) {
+            $isEmpty = empty($restData['start']) && empty($restData['end']);
+            $hasOriginal = isset($originalRests[$index]);
+
+            if ($isEmpty && $hasOriginal) {
+                $originalRests[$index]->delete();
                 continue;
             }
+
+            if ($isEmpty) {
+                continue;
+            }
+
             $restStart = !empty($restData['start']) ? Carbon::parse($date . ' ' . $restData['start']) : null;
             $restEnd = !empty($restData['end']) ? Carbon::parse($date . ' ' . $restData['end']) : null;
 
-            if (isset($originalRests[$index])) {
+            if ($hasOriginal) {
                 $originalRests[$index]->update([
                     'rest_start' => $restStart,
                     'rest_end' => $restEnd,
