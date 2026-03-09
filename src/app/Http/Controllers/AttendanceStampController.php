@@ -34,13 +34,20 @@ class AttendanceStampController extends Controller
             ->where('date', $today->format('Y-m-d'))
             ->first();
 
-        if ($action === 'clock_in' && !$attendance) {
-            Attendance::create([
-                'user_id' => $user->id,
-                'date' => $today->format('Y-m-d'),
-                'clock_in' => $now,
-                'status' => Attendance::STATUS_WORKING,
-            ]);
+        if ($action === 'clock_in' && (!$attendance || $attendance->status === Attendance::STATUS_OFF)) {
+            if ($attendance) {
+                $attendance->update([
+                    'clock_in' => $now,
+                    'status' => Attendance::STATUS_WORKING,
+                ]);
+            } else {
+                Attendance::create([
+                    'user_id' => $user->id,
+                    'date' => $today->format('Y-m-d'),
+                    'clock_in' => $now,
+                    'status' => Attendance::STATUS_WORKING,
+                ]);
+            }
         } elseif ($action === 'clock_out' && $attendance && $attendance->status === Attendance::STATUS_WORKING) {
             $attendance->update([
                 'clock_out' => $now,
