@@ -163,11 +163,16 @@ DB_PASSWORD=root
 
 ### テスト実行
 
-```bash
+
 # 全テスト実行
+
+```bash
 make test
+```
 
 # 特定のテストクラスを実行
+
+```bash
 docker-compose exec php php artisan test --filter=テストクラス名
 ```
 
