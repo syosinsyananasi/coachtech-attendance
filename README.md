@@ -43,26 +43,35 @@
 
 ### セットアップ手順
 
+1. リポジトリをクローン
+
 ```bash
-# 1. リポジトリをクローン
 git clone git@github.com:syosinsyananasi/coachtech-attendance.git
 cd coachtech-attendance
-
-# 2. 環境変数ファイルを作成
-cp src/.env.example src/.env
-
-# 3. src/.env のDB設定を以下に変更
-# DB_HOST=mysql
-# DB_DATABASE=laravel_db
-# DB_USERNAME=laravel_user
-# DB_PASSWORD=laravel_pass
-
-# 4. セットアップ（コンテナ起動〜マイグレーション〜シーディングまで一括）
-make setup
-
-# 5. アプリケーションにアクセス
-# http://localhost
 ```
+
+2. 環境変数ファイルを作成
+
+```bash
+cp src/.env.example src/.env
+```
+
+3. `src/.env` のDB設定を以下に変更
+
+```
+DB_HOST=mysql
+DB_DATABASE=laravel_db
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+```
+
+4. セットアップ（コンテナ起動〜マイグレーション〜シーディングまで一括）
+
+```bash
+make setup
+```
+
+5. アプリケーションにアクセス: http://localhost
 
 ## アカウント情報
 
@@ -123,17 +132,34 @@ PHPUnit を使用した Feature テストを実装しています。
 
 ```bash
 docker-compose exec mysql mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS demo_test;"
-docker-compose exec mysql mysql -u root -proot -e "GRANT ALL PRIVILEGES ON demo_test.* TO 'laravel_user'@'%';"
 ```
 
-2. `phpunit.xml` でテスト用の接続設定が定義済みです
+2. テスト用環境変数ファイルを作成する
+
+```bash
+cp src/.env src/.env.testing
+```
+
+3. `src/.env.testing` のDB設定を以下に変更する
+
+```
+APP_ENV=testing
+DB_CONNECTION=mysql_test
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=demo_test
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+4. `config/database.php` に `mysql_test` 接続が定義されていることを確認する
+
+5. `phpunit.xml` でテスト用の接続設定が定義済みです
 
 ```xml
 <server name="DB_CONNECTION" value="mysql_test"/>
 <server name="DB_DATABASE" value="demo_test"/>
 ```
-
-3. `config/database.php` に `mysql_test` 接続が定義されていることを確認してください
 
 ### テスト実行
 
