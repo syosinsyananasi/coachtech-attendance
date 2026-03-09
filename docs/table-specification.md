@@ -48,7 +48,7 @@
 | created_at | timestamp | | | | |
 | updated_at | timestamp | | | | |
 
-## 5. stamp_correction_requestsテーブル
+## 5. correction_requestsテーブル
 
 | カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY | 備考 |
 |---|---|---|---|---|---|---|
@@ -63,12 +63,12 @@
 | created_at | timestamp | | | | | |
 | updated_at | timestamp | | | | | |
 
-## 6. stamp_correction_request_restsテーブル
+## 6. correction_request_restsテーブル
 
 | カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
 |---|---|---|---|---|---|
 | id | unsigned bigint | ◯ | | ◯ | |
-| stamp_correction_request_id | unsigned bigint | | | ◯ | stamp_correction_requests(id) |
+| correction_request_id | unsigned bigint | | | ◯ | correction_requests(id) |
 | rest_id | unsigned bigint | | | | rests(id) |
 | request_rest_start | timestamp | | | | |
 | request_rest_end | timestamp | | | | |
