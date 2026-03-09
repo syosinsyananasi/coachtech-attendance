@@ -33,7 +33,6 @@ fresh:
 # テスト用データベース作成
 create-test-db:
 	docker-compose exec mysql mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS demo_test;"
-	docker-compose exec mysql mysql -u root -proot -e "GRANT ALL PRIVILEGES ON demo_test.* TO 'laravel_user'@'%';"
 
 # 全テスト実行
 test:
