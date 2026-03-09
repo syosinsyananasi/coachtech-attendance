@@ -45,4 +45,3 @@ setup:
 	docker-compose exec php php artisan key:generate
 	sleep 20
 	docker-compose exec php php artisan migrate --seed
-	@make create-test-db

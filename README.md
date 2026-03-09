@@ -131,7 +131,7 @@ PHPUnit を使用した Feature テストを実装しています。
 1. テスト用データベースを作成する
 
 ```bash
-docker-compose exec mysql mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS demo_test;"
+make create-test-db
 ```
 
 2. テスト用環境変数ファイルを作成する
