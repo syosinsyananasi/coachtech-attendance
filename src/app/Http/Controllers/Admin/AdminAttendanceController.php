@@ -189,6 +189,7 @@ class AdminAttendanceController extends Controller
                 $attendances->push([
                     'id' => null,
                     'date' => $dateLabel,
+                    'raw_date' => $dateKey,
                     'clock_in' => '',
                     'clock_out' => '',
                     'break_time' => '',
@@ -207,6 +208,16 @@ class AdminAttendanceController extends Controller
         return view('admin.attendance.staff', compact(
             'attendances', 'staffName', 'staffId', 'currentMonth', 'prevMonth', 'nextMonth'
         ));
+    }
+
+    public function redirectByDateForStaff($staffId, $date)
+    {
+        $attendance = Attendance::firstOrCreate(
+            ['user_id' => $staffId, 'date' => $date],
+            ['status' => Attendance::STATUS_OFF]
+        );
+
+        return redirect()->route('admin.attendance.show', $attendance->id);
     }
 
     public function exportCsv($id)

@@ -45,6 +45,8 @@
                         <td>
                             @if ($attendance['id'])
                                 <a class="data-table__link" href="{{ route('admin.attendance.show', $attendance['id']) }}">詳細</a>
+                            @else
+                                <a class="data-table__link" href="{{ route('admin.staff.redirectByDate', ['staffId' => $staffId, 'date' => $attendance['raw_date']]) }}">詳細</a>
                             @endif
                         </td>
                     </tr>

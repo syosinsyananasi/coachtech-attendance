@@ -45,6 +45,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.index');
         Route::get('/attendance/staff/{id}', [AdminAttendanceController::class, 'showStaff'])->name('admin.staff.show');
         Route::get('/attendance/staff/{id}/csv', [AdminAttendanceController::class, 'exportCsv'])->name('admin.staff.exportCsv');
+        Route::get('/attendance/staff/{staffId}/date/{date}', [AdminAttendanceController::class, 'redirectByDateForStaff'])->name('admin.staff.redirectByDate');
         Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])->name('admin.attendance.show');
         Route::post('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('admin.attendance.update');
         Route::get('/staff/list', [AdminAttendanceController::class, 'indexStaff'])->name('admin.staff.index');
