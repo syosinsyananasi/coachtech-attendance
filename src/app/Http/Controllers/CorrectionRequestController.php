@@ -23,15 +23,15 @@ class CorrectionRequestController extends Controller
             ->with(['attendance', 'user'])
             ->orderByDesc('created_at')
             ->get()
-            ->map(function ($req) {
+            ->map(function ($correctionRequest) {
                 return [
-                    'id' => $req->id,
-                    'attendance_id' => $req->attendance_id,
-                    'status_label' => $req->status === CorrectionRequest::STATUS_PENDING ? '承認待ち' : '承認済み',
-                    'user_name' => str_replace(' ', '', $req->user->name),
-                    'target_date' => $req->attendance->date->format('Y/m/d'),
-                    'reason' => $req->remark,
-                    'request_date' => $req->created_at->format('Y/m/d'),
+                    'id' => $correctionRequest->id,
+                    'attendance_id' => $correctionRequest->attendance_id,
+                    'status_label' => $correctionRequest->status === CorrectionRequest::STATUS_PENDING ? '承認待ち' : '承認済み',
+                    'user_name' => str_replace(' ', '', $correctionRequest->user->name),
+                    'target_date' => $correctionRequest->attendance->date->format('Y/m/d'),
+                    'reason' => $correctionRequest->remark,
+                    'request_date' => $correctionRequest->created_at->format('Y/m/d'),
                 ];
             });
 
@@ -47,14 +47,14 @@ class CorrectionRequestController extends Controller
             ->with(['attendance', 'user'])
             ->orderByDesc('created_at')
             ->get()
-            ->map(function ($req) {
+            ->map(function ($correctionRequest) {
                 return [
-                    'id' => $req->id,
-                    'status_label' => $req->status === CorrectionRequest::STATUS_PENDING ? '承認待ち' : '承認済み',
-                    'user_name' => str_replace(' ', '', $req->user->name),
-                    'target_date' => $req->attendance->date->format('Y/m/d'),
-                    'reason' => $req->remark,
-                    'request_date' => $req->created_at->format('Y/m/d'),
+                    'id' => $correctionRequest->id,
+                    'status_label' => $correctionRequest->status === CorrectionRequest::STATUS_PENDING ? '承認待ち' : '承認済み',
+                    'user_name' => str_replace(' ', '', $correctionRequest->user->name),
+                    'target_date' => $correctionRequest->attendance->date->format('Y/m/d'),
+                    'reason' => $correctionRequest->remark,
+                    'request_date' => $correctionRequest->created_at->format('Y/m/d'),
                 ];
             });
 
@@ -113,21 +113,21 @@ class CorrectionRequestController extends Controller
             'clock_out' => $correctionRequest->request_clock_out,
         ]);
 
-        foreach ($correctionRequest->correctionRequestRests as $corrRest) {
-            $isDelete = is_null($corrRest->request_rest_start) && is_null($corrRest->request_rest_end);
+        foreach ($correctionRequest->correctionRequestRests as $correctionRequestRest) {
+            $isDeletion = is_null($correctionRequestRest->request_rest_start) && is_null($correctionRequestRest->request_rest_end);
 
-            if ($corrRest->rest_id && $isDelete) {
-                $corrRest->rest->delete();
-            } elseif ($corrRest->rest_id) {
-                $corrRest->rest->update([
-                    'rest_start' => $corrRest->request_rest_start,
-                    'rest_end' => $corrRest->request_rest_end,
+            if ($correctionRequestRest->rest_id && $isDeletion) {
+                $correctionRequestRest->rest->delete();
+            } elseif ($correctionRequestRest->rest_id) {
+                $correctionRequestRest->rest->update([
+                    'rest_start' => $correctionRequestRest->request_rest_start,
+                    'rest_end' => $correctionRequestRest->request_rest_end,
                 ]);
             } else {
                 \App\Models\Rest::create([
                     'attendance_id' => $attendance->id,
-                    'rest_start' => $corrRest->request_rest_start,
-                    'rest_end' => $corrRest->request_rest_end,
+                    'rest_start' => $correctionRequestRest->request_rest_start,
+                    'rest_end' => $correctionRequestRest->request_rest_end,
                 ]);
             }
         }
