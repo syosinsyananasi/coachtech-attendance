@@ -45,6 +45,5 @@ setup:
 	docker-compose exec php composer install
 	docker-compose exec php php artisan key:generate
 	sleep 20
-	docker-compose exec php php artisan migrate
-	docker-compose exec php php artisan db:seed
+	docker-compose exec php php artisan migrate --seed
 	@make create-test-db
