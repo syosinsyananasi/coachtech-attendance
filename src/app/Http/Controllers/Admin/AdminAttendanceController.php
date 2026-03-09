@@ -26,7 +26,7 @@ class AdminAttendanceController extends Controller
         $attendances = User::all()->map(function ($user) use ($attendanceRecords) {
             $attendance = $attendanceRecords->get($user->id);
 
-            if ($attendance) {
+            if ($attendance && $attendance->clock_in) {
                 $breakMinutes = $attendance->rests->sum(function ($rest) {
                     if ($rest->rest_start && $rest->rest_end) {
                         return $rest->rest_start->diffInMinutes($rest->rest_end);
@@ -41,7 +41,7 @@ class AdminAttendanceController extends Controller
                 return [
                     'id' => $attendance->id,
                     'user_name' => str_replace(' ', '', $user->name),
-                    'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
+                    'clock_in' => $attendance->clock_in->format('H:i'),
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
                     'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
                     'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
@@ -49,7 +49,7 @@ class AdminAttendanceController extends Controller
             }
 
             return [
-                'id' => null,
+                'id' => $attendance ? $attendance->id : null,
                 'user_id' => $user->id,
                 'user_name' => str_replace(' ', '', $user->name),
                 'clock_in' => '',
@@ -174,8 +174,8 @@ class AdminAttendanceController extends Controller
             $dateKey = $current->format('Y-m-d');
             $dateLabel = $current->format('m/d') . '(' . $dayNames[$current->dayOfWeek] . ')';
 
-            if ($attendanceRecords->has($dateKey)) {
-                $attendance = $attendanceRecords->get($dateKey);
+            $attendance = $attendanceRecords->get($dateKey);
+            if ($attendance && $attendance->clock_in) {
                 $breakMinutes = $attendance->rests->sum(function ($rest) {
                     if ($rest->rest_start && $rest->rest_end) {
                         return $rest->rest_start->diffInMinutes($rest->rest_end);
@@ -190,14 +190,14 @@ class AdminAttendanceController extends Controller
                 $attendances->push([
                     'id' => $attendance->id,
                     'date' => $dateLabel,
-                    'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
+                    'clock_in' => $attendance->clock_in->format('H:i'),
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
                     'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
                     'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
                 ]);
             } else {
                 $attendances->push([
-                    'id' => null,
+                    'id' => $attendance ? $attendance->id : null,
                     'date' => $dateLabel,
                     'raw_date' => $dateKey,
                     'clock_in' => '',

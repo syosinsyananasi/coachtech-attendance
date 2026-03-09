@@ -94,7 +94,7 @@ class AttendanceController extends Controller
             $key = $date->format('Y-m-d');
             $attendance = $records->get($key);
 
-            if ($attendance) {
+            if ($attendance && $attendance->clock_in) {
                 $breakMinutes = $attendance->rests->sum(function ($rest) {
                     if ($rest->rest_start && $rest->rest_end) {
                         return $rest->rest_start->diffInMinutes($rest->rest_end);
@@ -110,14 +110,14 @@ class AttendanceController extends Controller
                     'id' => $attendance->id,
                     'raw_date' => $key,
                     'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
-                    'clock_in' => $attendance->clock_in ? $attendance->clock_in->format('H:i') : '',
+                    'clock_in' => $attendance->clock_in->format('H:i'),
                     'clock_out' => $attendance->clock_out ? $attendance->clock_out->format('H:i') : '',
                     'break_time' => sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60),
                     'total_time' => sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60),
                 ]);
             } else {
                 $attendances->push([
-                    'id' => null,
+                    'id' => $attendance ? $attendance->id : null,
                     'raw_date' => $key,
                     'date' => $date->format('m/d') . '(' . $dayNames[$date->dayOfWeek] . ')',
                     'clock_in' => '',
