@@ -50,6 +50,7 @@ class AdminAttendanceController extends Controller
 
             return [
                 'id' => null,
+                'user_id' => $user->id,
                 'user_name' => str_replace(' ', '', $user->name),
                 'clock_in' => '',
                 'clock_out' => '',
