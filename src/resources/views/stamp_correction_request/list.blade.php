@@ -7,7 +7,7 @@
 @endphp
 
 @section('content')
-<div class="content-page">
+<section class="content-page">
     <div class="content-page__inner">
         <h1 class="content-page__title">申請一覧</h1>
 
@@ -49,5 +49,5 @@
             </table>
         </div>
     </div>
-</div>
+</section>
 @endsection

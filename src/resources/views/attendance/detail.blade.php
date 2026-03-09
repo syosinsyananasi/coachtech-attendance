@@ -7,7 +7,7 @@
 @endphp
 
 @section('content')
-<div class="content-page">
+<section class="content-page">
     <div class="content-page__inner">
         <h1 class="content-page__title">勤怠詳細</h1>
 
@@ -139,7 +139,7 @@
             @endif
         </form>
     </div>
-</div>
+</section>
 @endsection
 
 @if (!$isPending)

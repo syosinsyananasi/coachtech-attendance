@@ -3,7 +3,7 @@
 @section('title', 'スタッフ別勤怠一覧')
 
 @section('content')
-<div class="content-page">
+<section class="content-page">
     <div class="content-page__inner">
         <h1 class="content-page__title">{{ $staffName ?? '' }}さんの勤怠</h1>
 
@@ -59,5 +59,5 @@
             <a class="csv-export__button" href="{{ route('admin.staff.exportCsv', ['id' => $staffId ?? '', 'month' => $currentMonth ?? '']) }}">CSV出力</a>
         </div>
     </div>
-</div>
+</section>
 @endsection

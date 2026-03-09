@@ -3,7 +3,7 @@
 @section('title', '勤怠一覧（管理者）')
 
 @section('content')
-<div class="content-page">
+<section class="content-page">
     <div class="content-page__inner">
         <h1 class="content-page__title">{{ $currentDate ?? '2023年6月1日' }}の勤怠</h1>
 
@@ -59,6 +59,6 @@
             </table>
         </div>
     </div>
-</div>
+</section>
 @endsection
 

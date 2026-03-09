@@ -3,7 +3,7 @@
 @section('title', 'スタッフ一覧')
 
 @section('content')
-<div class="content-page">
+<section class="content-page">
     <div class="content-page__inner">
         <h1 class="content-page__title">スタッフ一覧</h1>
 
@@ -32,5 +32,5 @@
             </table>
         </div>
     </div>
-</div>
+</section>
 @endsection
