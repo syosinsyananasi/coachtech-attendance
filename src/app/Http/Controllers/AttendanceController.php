@@ -20,7 +20,7 @@ class AttendanceController extends Controller
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $endOfMonth = Carbon::parse($month)->endOfMonth();
 
-        $dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+        $dayNames = Attendance::DAY_NAMES;
 
         $records = Attendance::where('user_id', $user->id)
             ->whereBetween('date', [$startOfMonth, $endOfMonth])

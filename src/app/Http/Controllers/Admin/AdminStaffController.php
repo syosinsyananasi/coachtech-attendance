@@ -31,7 +31,7 @@ class AdminStaffController extends Controller
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $endOfMonth = Carbon::parse($month)->endOfMonth();
 
-        $dayNames = ['日','月','火','水','木','金','土'];
+        $dayNames = Attendance::DAY_NAMES;
 
         $attendanceRecords = Attendance::where('user_id', $id)
             ->whereBetween('date', [$startOfMonth, $endOfMonth])

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CorrectionRequest;
+use App\Models\Rest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -124,7 +125,7 @@ class CorrectionRequestController extends Controller
                     'rest_end' => $correctionRequestRest->request_rest_end,
                 ]);
             } else {
-                \App\Models\Rest::create([
+                Rest::create([
                     'attendance_id' => $attendance->id,
                     'rest_start' => $correctionRequestRest->request_rest_start,
                     'rest_end' => $correctionRequestRest->request_rest_end,

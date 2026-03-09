@@ -14,6 +14,8 @@ class Attendance extends Model
     const STATUS_ON_BREAK = 2; // 休憩中
     const STATUS_FINISHED = 3; // 退勤済
 
+    const DAY_NAMES = ['日', '月', '火', '水', '木', '金', '土'];
+
     protected $fillable = [
         'user_id',
         'date',
