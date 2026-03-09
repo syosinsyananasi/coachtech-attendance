@@ -29,9 +29,9 @@ Route::get('/stamp_correction_request/list', [CorrectionRequestController::class
 
 // 修正申請承認（管理者のみ）
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/stamp_correction_request/approve/{id}', [CorrectionRequestController::class, 'show'])
+    Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [CorrectionRequestController::class, 'show'])
         ->name('correction_request.show');
-    Route::post('/stamp_correction_request/approve/{id}', [CorrectionRequestController::class, 'approve'])
+    Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [CorrectionRequestController::class, 'approve'])
         ->name('correction_request.approve');
 });
 

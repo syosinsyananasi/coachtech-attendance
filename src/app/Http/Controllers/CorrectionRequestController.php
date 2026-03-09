@@ -62,8 +62,9 @@ class CorrectionRequestController extends Controller
         return view('admin.stamp_correction_request.list', compact('requests', 'tab'));
     }
 
-    public function show($id)
+    public function show($attendance_correct_request_id)
     {
+        $id = $attendance_correct_request_id;
         $correctionRequest = CorrectionRequest::with([
             'attendance.user',
             'attendance.rests',
@@ -97,8 +98,9 @@ class CorrectionRequestController extends Controller
         ));
     }
 
-    public function approve($id)
+    public function approve($attendance_correct_request_id)
     {
+        $id = $attendance_correct_request_id;
         $correctionRequest = CorrectionRequest::with([
             'correctionRequestRests',
             'attendance',
