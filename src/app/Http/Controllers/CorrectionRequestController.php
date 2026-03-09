@@ -114,7 +114,11 @@ class CorrectionRequestController extends Controller
         ]);
 
         foreach ($correctionRequest->correctionRequestRests as $corrRest) {
-            if ($corrRest->rest_id) {
+            $isDelete = is_null($corrRest->request_rest_start) && is_null($corrRest->request_rest_end);
+
+            if ($corrRest->rest_id && $isDelete) {
+                $corrRest->rest->delete();
+            } elseif ($corrRest->rest_id) {
                 $corrRest->rest->update([
                     'rest_start' => $corrRest->request_rest_start,
                     'rest_end' => $corrRest->request_rest_end,

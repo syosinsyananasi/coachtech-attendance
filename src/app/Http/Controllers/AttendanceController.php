@@ -214,15 +214,19 @@ class AttendanceController extends Controller
         $originalRests = $attendance->rests;
 
         foreach ($rests as $index => $restData) {
-            if (empty($restData['start']) && empty($restData['end'])) {
+            $isEmpty = empty($restData['start']) && empty($restData['end']);
+            $hasOriginal = isset($originalRests[$index]);
+
+            if ($isEmpty && !$hasOriginal) {
                 continue;
             }
+
             $restStart = !empty($restData['start']) ? Carbon::parse($date . ' ' . $restData['start']) : null;
             $restEnd = !empty($restData['end']) ? Carbon::parse($date . ' ' . $restData['end']) : null;
 
             CorrectionRequestRest::create([
                 'correction_request_id' => $correctionRequest->id,
-                'rest_id' => isset($originalRests[$index]) ? $originalRests[$index]->id : null,
+                'rest_id' => $hasOriginal ? $originalRests[$index]->id : null,
                 'request_rest_start' => $restStart,
                 'request_rest_end' => $restEnd,
             ]);
