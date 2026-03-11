@@ -29,9 +29,9 @@
             <div class="detail-card__row">
                 <span class="detail-card__label">出勤・退勤</span>
                 <div class="detail-card__value">
-                    <div class="detail-card__text">{{ $attendance->clock_in ? $attendance->clock_in->format('H:i') : '' }}</div>
+                    <div class="detail-card__text">{{ $correctionRequest->request_clock_in ? $correctionRequest->request_clock_in->format('H:i') : '' }}</div>
                     <span class="detail-card__separator">〜</span>
-                    <div class="detail-card__text">{{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}</div>
+                    <div class="detail-card__text">{{ $correctionRequest->request_clock_out ? $correctionRequest->request_clock_out->format('H:i') : '' }}</div>
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
             <div class="detail-card__row">
                 <span class="detail-card__label">備考</span>
                 <div class="detail-card__value">
-                    <div>{{ $attendance->note ?? '' }}</div>
+                    <div>{{ $correctionRequest->remark ?? '' }}</div>
                 </div>
             </div>
         </div>
